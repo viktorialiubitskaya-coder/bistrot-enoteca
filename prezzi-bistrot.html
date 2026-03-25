@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Offerta — BistrotEnoteca Del Corso</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0A0503;--dark:#130A06;--mid:#1C0E08;
+  --red:#8B1A2A;--red2:#A82035;
+  --gold:#C9A84C;--gold2:#E8C870;
+  --cream:#F5EFE0;--text:#EDE8DF;--muted:rgba(237,232,223,.45);
+  --border:rgba(201,168,76,.18);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh}
+
+/* HEADER */
+.header{
+  background:var(--dark);border-bottom:1px solid var(--border);
+  padding:28px 52px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.header-logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--cream);letter-spacing:.08em}
+.header-logo em{font-style:italic;color:var(--gold)}
+.header-badge{font-size:9px;letter-spacing:.18em;text-transform:uppercase;background:var(--red);color:white;padding:4px 14px;font-weight:500}
+
+/* HERO */
+.hero{
+  background:linear-gradient(135deg,var(--dark),var(--mid));
+  padding:72px 52px 56px;text-align:center;
+  border-bottom:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'OFFERTA';
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Cormorant Garamond',serif;font-size:200px;font-weight:700;
+  color:rgba(201,168,76,.03);white-space:nowrap;pointer-events:none;letter-spacing:.1em;
+}
+.hero-pretitle{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,5vw,52px);font-weight:300;line-height:1.15;margin-bottom:14px}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-sub{font-size:14px;color:var(--muted);max-width:520px;margin:0 auto 28px;line-height:1.8}
+.offer-expiry{
+  display:inline-flex;align-items:center;gap:10px;
+  background:rgba(139,26,42,.15);border:1px solid rgba(139,26,42,.3);
+  padding:10px 24px;font-size:12px;color:rgba(237,232,223,.7);
+}
+.offer-expiry strong{color:var(--gold)}
+
+/* PACKAGES */
+.packages{padding:64px 52px;display:grid;grid-template-columns:repeat(3,1fr);gap:2px;max-width:1100px;margin:0 auto}
+
+.pkg{background:var(--dark);border:1px solid rgba(255,255,255,.05);padding:40px 32px;position:relative;transition:all .3s}
+.pkg.featured{background:rgba(139,26,42,.08);border:2px solid var(--red);transform:translateY(-8px);box-shadow:0 20px 60px rgba(139,26,42,.2)}
+.pkg-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--red),var(--red2));color:white;padding:4px 20px;font-size:8px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;white-space:nowrap}
+
+.pkg-name{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;margin-bottom:4px}
+.pkg-tagline{font-size:11px;color:var(--muted);letter-spacing:.06em;margin-bottom:24px;font-style:italic}
+
+.pkg-price-old{font-size:13px;color:rgba(237,232,223,.3);text-decoration:line-through;margin-bottom:4px}
+.pkg-price{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;color:var(--gold);line-height:1}
+.pkg-price sup{font-size:24px;vertical-align:top;margin-top:10px;display:inline-block}
+.pkg-monthly{font-size:12px;color:var(--muted);margin-top:6px;margin-bottom:6px}
+.pkg-domain{font-size:11px;color:rgba(237,232,223,.3);margin-bottom:24px;font-style:italic}
+
+.pkg-divider{height:1px;background:rgba(255,255,255,.06);margin-bottom:24px}
+
+.pkg-features{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:32px}
+.pkg-features li{font-size:12px;color:var(--muted);display:flex;gap:10px;align-items:flex-start;line-height:1.5}
+.pkg-features li span:first-child{color:var(--gold);flex-shrink:0;font-size:13px}
+.pkg-features li.off{opacity:.3}
+.pkg-features li.off span:first-child{color:rgba(237,232,223,.2)}
+
+.pkg-cta{
+  display:block;width:100%;text-align:center;
+  padding:14px;
+  font-family:'Jost',sans-serif;font-size:11px;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;
+  text-decoration:none;cursor:pointer;border:none;
+  transition:all .3s;
+}
+.pkg-cta-main{background:linear-gradient(135deg,var(--red),var(--red2));color:white}
+.pkg-cta-main:hover{opacity:.85;transform:translateY(-1px);box-shadow:0 6px 20px rgba(139,26,42,.4)}
+.pkg-cta-outline{background:transparent;border:1px solid var(--border);color:var(--gold)}
+.pkg-cta-outline:hover{background:rgba(201,168,76,.08)}
+
+/* ADDONS */
+.addons{padding:0 52px 64px;max-width:1100px;margin:0 auto}
+.addons-title{
+  font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;
+  margin-bottom:6px;text-align:center;
+}
+.addons-title em{font-style:italic;color:var(--gold)}
+.addons-sub{font-size:12px;color:var(--muted);text-align:center;margin-bottom:32px;letter-spacing:.06em}
+.addons-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px}
+.addon{background:var(--dark);border:1px solid rgba(255,255,255,.05);padding:24px 20px;transition:all .3s}
+.addon:hover{border-color:var(--border);background:var(--mid)}
+.addon-ico{font-size:28px;margin-bottom:12px;display:block}
+.addon-name{font-size:13px;font-weight:500;margin-bottom:4px;color:var(--cream)}
+.addon-desc{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:12px}
+.addon-price{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold)}
+
+/* COMPARISON */
+.comparison{padding:0 52px 64px;max-width:900px;margin:0 auto}
+.comp-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;text-align:center;margin-bottom:32px}
+.comp-title em{font-style:italic;color:var(--gold)}
+.comp-table{width:100%;border-collapse:collapse}
+.comp-table th{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);padding:12px 16px;text-align:center;border-bottom:1px solid var(--border)}
+.comp-table th:first-child{text-align:left}
+.comp-table td{padding:12px 16px;font-size:12px;color:var(--muted);border-bottom:1px solid rgba(255,255,255,.04);text-align:center}
+.comp-table td:first-child{text-align:left;color:var(--text)}
+.comp-table tr:hover td{background:rgba(255,255,255,.02)}
+.comp-yes{color:var(--gold);font-size:15px}
+.comp-no{color:rgba(237,232,223,.15);font-size:15px}
+.comp-val{font-size:11px;color:rgba(237,232,223,.5)}
+
+/* GARANZIA */
+.garanzia{
+  background:var(--mid);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:48px 52px;display:flex;align-items:center;gap:48px;
+  max-width:100%;
+}
+.gar-ico{font-size:56px;flex-shrink:0}
+.gar-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;margin-bottom:8px}
+.gar-title em{font-style:italic;color:var(--gold)}
+.gar-text{font-size:13px;color:var(--muted);line-height:1.8;max-width:580px}
+
+/* CTA FINALE */
+.cta-finale{
+  padding:72px 52px;text-align:center;
+  background:linear-gradient(135deg,var(--mid),var(--dark));
+}
+.cta-finale h2{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,44px);font-weight:300;margin-bottom:12px;line-height:1.2}
+.cta-finale h2 em{font-style:italic;color:var(--gold)}
+.cta-finale p{font-size:14px;color:var(--muted);margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.8}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-main{background:linear-gradient(135deg,var(--red),var(--red2));color:white;border:none;padding:18px 48px;font-family:'Jost',sans-serif;font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block}
+.btn-main:hover{opacity:.85;transform:translateY(-2px);box-shadow:0 8px 28px rgba(139,26,42,.4)}
+.btn-sec{border:1px solid var(--border);color:var(--gold);padding:18px 48px;font-family:'Jost',sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;background:transparent;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block}
+.btn-sec:hover{background:rgba(201,168,76,.08)}
+
+/* FOOTER */
+.footer{background:var(--dark);border-top:1px solid var(--border);padding:24px 52px;display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--muted);flex-wrap:wrap;gap:8px}
+
+@media(max-width:768px){
+  .header{padding:20px;flex-direction:column;gap:12px;text-align:center}
+  .hero{padding:48px 20px 40px}
+  .packages{padding:40px 20px;grid-template-columns:1fr}
+  .pkg.featured{transform:none}
+  .addons{padding:0 20px 48px}
+  .addons-grid{grid-template-columns:1fr 1fr}
+  .comparison{padding:0 20px 48px}
+  .garanzia{padding:40px 20px;flex-direction:column;text-align:center}
+  .cta-finale{padding:56px 20px}
+  .footer{padding:20px;flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">Bistrot<em>Enoteca</em> Del Corso</div>
+  <div style="display:flex;align-items:center;gap:14px">
+    <span style="font-size:11px;color:var(--muted)">Offerta preparata da</span>
+    <span style="font-size:13px;font-weight:500;color:var(--cream)">Viktoria · +39 351 390 4408</span>
+    <div class="header-badge">Offerta personale</div>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-pretitle">Proposta esclusiva · Hugo e Wilma</div>
+  <h1 class="hero-title">Il vostro sito web<br><em>fatto su misura</em></h1>
+  <p class="hero-sub">Ho costruito tre versioni del sito partendo dalle vostre foto reali, i vostri colori e la vostra storia. Ogni pacchetto include tutto il necessario per essere trovati online e riempire i tavoli.</p>
+  <div class="offer-expiry">
+    🎁 Offerta lancio · <strong>€100 di sconto</strong> · Valida fino al <strong id="expiry-date"></strong>
+  </div>
+</div>
+
+<div class="packages">
+
+  <!-- PRESENZA -->
+  <div class="pkg">
+    <div class="pkg-name">Presenza</div>
+    <div class="pkg-tagline">Per iniziare bene</div>
+    <div class="pkg-price"><sup>€</sup>299</div>
+    <div class="pkg-monthly">+ €29/mese</div>
+    <div class="pkg-domain">Dominio .it incluso il primo anno</div>
+    <div class="pkg-divider"></div>
+    <ul class="pkg-features">
+      <li><span>✓</span>Sito web professionale IT + EN</li>
+      <li><span>✓</span>Design con i vostri colori e logo</li>
+      <li><span>✓</span>Foto reali dei vostri piatti</li>
+      <li><span>✓</span>Menu "cucina di stasera"</li>
+      <li><span>✓</span>Pulsante WhatsApp per prenotare</li>
+      <li><span>✓</span>SEO — trovabili su Google</li>
+      <li><span>✓</span>Mobile perfetto iPhone + Android</li>
+      <li><span>✓</span>1 aggiornamento/mese incluso</li>
+      <li class="off"><span>—</span>Calendario serate mensile</li>
+      <li class="off"><span>—</span>Feed recensioni Google</li>
+      <li class="off"><span>—</span>Fork & TripAdvisor ottimizzati</li>
+      <li class="off"><span>—</span>QR code menu per i tavoli</li>
+    </ul>
+    <a href="https://wa.me/393513904408?text=Ciao%20Viktoria!%20Siamo%20Hugo%20e%20Wilma%20e%20ci%20interessa%20il%20pacchetto%20Presenza" class="pkg-cta pkg-cta-outline" target="_blank">Scegli Presenza</a>
+  </div>
+
+  <!-- SERATA — FEATURED -->
+  <div class="pkg featured">
+    <div class="pkg-badge">⭐ Consigliato per voi</div>
+    <div class="pkg-name">Serata</div>
+    <div class="pkg-tagline">Il sito che avete visto oggi</div>
+    <div class="pkg-price-old">€649</div>
+    <div class="pkg-price"><sup>€</sup>549</div>
+    <div class="pkg-monthly">+ €59/mese</div>
+    <div class="pkg-domain">Dominio .it + email info@ inclusi</div>
+    <div class="pkg-divider"></div>
+    <ul class="pkg-features">
+      <li><span>✓</span>Tutto di Presenza</li>
+      <li><span>✓</span>Calendario serate con cucine + flags</li>
+      <li><span>✓</span>Feed 6 recensioni Google ★★★★★</li>
+      <li><span>✓</span>Sezione jazz e musicisti del venerdì</li>
+      <li><span>✓</span>Iscrizione "cucina di stasera" WhatsApp</li>
+      <li><span>✓</span>Mappa interattiva + Google Maps</li>
+      <li><span>✓</span>Slideshow con le vostre foto</li>
+      <li><span>✓</span>Aggiornamenti illimitati</li>
+      <li><span>✓</span>Supporto WhatsApp risposta in 24h</li>
+      <li><span>✓</span>Primo mese di assistenza gratuito</li>
+      <li class="off"><span>—</span>Fork & TripAdvisor ottimizzati</li>
+      <li class="off"><span>—</span>Report mensile visitatori</li>
+    </ul>
+    <a href="https://wa.me/393513904408?text=Ciao%20Viktoria!%20Siamo%20Hugo%20e%20Wilma%20e%20vogliamo%20attivare%20il%20pacchetto%20Serata%20%F0%9F%8D%B7" class="pkg-cta pkg-cta-main" target="_blank">Attiva Serata →</a>
+  </div>
+
+  <!-- LOCALE FAMOSO -->
+  <div class="pkg">
+    <div class="pkg-name">Locale Famoso</div>
+    <div class="pkg-tagline">Per crescere davvero</div>
+    <div class="pkg-price"><sup>€</sup>899</div>
+    <div class="pkg-monthly">+ €89/mese</div>
+    <div class="pkg-domain">Dominio .it + .com + email inclusi</div>
+    <div class="pkg-divider"></div>
+    <ul class="pkg-features">
+      <li><span>✓</span>Tutto di Serata</li>
+      <li><span>✓</span>Fork — profilo completo IT+EN+DE</li>
+      <li><span>✓</span>TripAdvisor — foto, descrizione, link</li>
+      <li><span>✓</span>Google Business — 2 post/settimana</li>
+      <li><span>✓</span>QR code menu elegante per i tavoli</li>
+      <li><span>✓</span>Report mensile — visitatori, sorgenti</li>
+      <li><span>✓</span>SEO avanzato — parole chiave locali</li>
+      <li><span>✓</span>Aggiornamenti illimitati prioritari</li>
+      <li><span>✓</span>Supporto WhatsApp risposta in 4h</li>
+      <li><span>✓</span>Consulenza trimestrale online</li>
+    </ul>
+    <a href="https://wa.me/393513904408?text=Ciao%20Viktoria!%20Siamo%20Hugo%20e%20Wilma%20e%20ci%20interessa%20il%20pacchetto%20Locale%20Famoso" class="pkg-cta pkg-cta-outline" target="_blank">Scegli Locale Famoso</a>
+  </div>
+
+</div>
+
+<!-- ADDONS -->
+<div class="addons">
+  <h2 class="addons-title">Servizi <em>aggiuntivi</em></h2>
+  <p class="addons-sub">Aggiungibili a qualsiasi pacchetto · pagamento unico</p>
+  <div class="addons-grid">
+    <div class="addon">
+      <span class="addon-ico">📱</span>
+      <div class="addon-name">QR Menu digitale</div>
+      <div class="addon-desc">Menu PDF elegante con QR code per ogni tavolo. Aggiornabile in 24h.</div>
+      <div class="addon-price">€79</div>
+    </div>
+    <div class="addon">
+      <span class="addon-ico">🌍</span>
+      <div class="addon-name">Terza lingua</div>
+      <div class="addon-desc">Aggiungi tedesco, francese o russo al sito. Perfetto per turisti.</div>
+      <div class="addon-price">€99</div>
+    </div>
+    <div class="addon">
+      <span class="addon-ico">📸</span>
+      <div class="addon-name">Aggiornamento stagionale</div>
+      <div class="addon-desc">Nuove foto, menu aggiornato, orari stagionali. 2 volte l'anno.</div>
+      <div class="addon-price">€59 cad.</div>
+    </div>
+    <div class="addon">
+      <span class="addon-ico">⭐</span>
+      <div class="addon-name">Gestione recensioni</div>
+      <div class="addon-desc">Risposta professionale IT+EN alle recensioni Google e TripAdvisor.</div>
+      <div class="addon-price">€49/mese</div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPARISON TABLE -->
+<div class="comparison">
+  <h2 class="comp-title">Confronto <em>pacchetti</em></h2>
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th style="text-align:left">Funzione</th>
+        <th>Presenza</th>
+        <th style="color:var(--red)">Serata ⭐</th>
+        <th>Locale Famoso</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Sito IT + EN</td><td><span class="comp-yes">✓</span></td><td><span class="comp-yes">✓</span></td><td><span class="comp-yes">✓</span></td></tr>
+      <tr><td>Foto reali vostre</td><td><span class="comp-yes">✓</span></td><td><span class="comp-yes">✓</span></td><td><span class="comp-yes">✓</span></td></tr>
+      <tr><td>Menu rotante ogni sera</td><td><span class="comp-yes">✓</span></td><td><span class="comp-yes">✓</span></td><td><span class="comp-yes">✓</span></td></tr>
+      <tr><td>WhatsApp prenota</td><td><span class="comp-yes">✓</span></td><td><span class="comp-yes">✓</span></td><td><span class="comp-yes">✓</span></td></tr>
+      <tr><td>SEO Google locale</td><td><span class="comp-yes">✓</span></td><td><span class="comp-yes">✓</span></td><td><span class="comp-yes">✓</span></td></tr>
+      <tr><td>Calendario serate</td><td><span class="comp-no">—</span></td><td><span class="comp-yes">✓</span></td><td><span class="comp-yes">✓</span></td></tr>
+      <tr><td>Feed recensioni Google</td><td><span class="comp-no">—</span></td><td><span class="comp-yes">✓</span></td><td><span class="comp-yes">✓</span></td></tr>
+      <tr><td>Sezione Jazz & musicisti</td><td><span class="comp-no">—</span></td><td><span class="comp-yes">✓</span></td><td><span class="comp-yes">✓</span></td></tr>
+      <tr><td>Iscrizione WhatsApp</td><td><span class="comp-no">—</span></td><td><span class="comp-yes">✓</span></td><td><span class="comp-yes">✓</span></td></tr>
+      <tr><td>Fork ottimizzato</td><td><span class="comp-no">—</span></td><td><span class="comp-no">—</span></td><td><span class="comp-yes">✓</span></td></tr>
+      <tr><td>TripAdvisor ottimizzato</td><td><span class="comp-no">—</span></td><td><span class="comp-no">—</span></td><td><span class="comp-yes">✓</span></td></tr>
+      <tr><td>Google Business posts</td><td><span class="comp-no">—</span></td><td><span class="comp-no">—</span></td><td><span class="comp-yes">✓</span></td></tr>
+      <tr><td>QR menu per tavoli</td><td><span class="comp-no">—</span></td><td><span class="comp-no">—</span></td><td><span class="comp-yes">✓</span></td></tr>
+      <tr><td>Report mensile</td><td><span class="comp-no">—</span></td><td><span class="comp-no">—</span></td><td><span class="comp-yes">✓</span></td></tr>
+      <tr>
+        <td style="font-weight:500;color:var(--cream)">Prezzo una tantum</td>
+        <td><span class="comp-val">€299</span></td>
+        <td style="color:var(--gold);font-weight:500">€549 <small style="text-decoration:line-through;color:var(--muted);font-size:10px">€649</small></td>
+        <td><span class="comp-val">€899</span></td>
+      </tr>
+      <tr>
+        <td style="font-weight:500;color:var(--cream)">Canone mensile</td>
+        <td><span class="comp-val">€29/mese</span></td>
+        <td style="color:var(--gold);font-weight:500">€59/mese</td>
+        <td><span class="comp-val">€89/mese</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- CTA FINALE -->
+<div class="cta-finale">
+  <h2>Pronti ad iniziare,<br><em>Hugo e Wilma?</em></h2>
+  <p>Il sito è già pronto — serve solo la vostra conferma. Posso attivarlo entro 48 ore dalla firma. Ogni giorno senza sito sono clienti che non vi trovano su Google.</p>
+  <div class="cta-btns">
+    <a href="https://wa.me/393513904408?text=Ciao%20Viktoria!%20Siamo%20Hugo%20e%20Wilma%2C%20vogliamo%20attivare%20il%20sito%20%F0%9F%98%8A" target="_blank" class="btn-main">💬 Scrivimi su WhatsApp →</a>
+    <a href="tel:+393513904408" class="btn-sec">📞 Chiama Viktoria</a>
+  </div>
+  <p style="font-size:11px;color:rgba(237,232,223,.25);margin-top:20px">Offerta valida fino al <span id="expiry2"></span> · Nessun vincolo · Disdetta in qualsiasi momento</p>
+</div>
+
+<div class="footer">
+  <span>© 2025 Viktoria · Web & Digital · +39 351 390 4408</span>
+  <span style="color:var(--gold)">Proposta per BistrotEnoteca Del Corso · Santa Domenica Talao</span>
+</div>
+
+<script>
+const d = new Date();
+d.setDate(d.getDate() + 14);
+const fmt = d.toLocaleDateString('it-IT', {day:'2-digit', month:'long', year:'numeric'});
+document.getElementById('expiry-date').textContent = fmt;
+document.getElementById('expiry2').textContent = fmt;
+</script>
+</body>
+</html>
