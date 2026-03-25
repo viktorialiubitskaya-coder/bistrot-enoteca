@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BistrotEnoteca Del Corso — Notte di Jazz</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;0,400;1,200;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080504;--card:#100A07;--dark:#160C08;
+  --red:#8B1A2A;--red2:#A82035;--bordeaux:#5C0F1A;
+  --gold:#C9A84C;--gold2:#E8C870;
+  --cream:#F5EFE0;--text:#EDE8DF;--muted:rgba(237,232,223,.4);
+  --border:rgba(201,168,76,.15);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9997;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+[data-en]{display:none}
+body.en [data-it]{display:none}
+body.en [data-en]{display:block}
+body.en span[data-en]{display:inline}
+body.en span[data-it]{display:none}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:70px;padding:0 52px;display:flex;align-items:center;justify-content:space-between;transition:all .4s}
+nav.solid{background:rgba(8,5,4,.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo-wrap{display:flex;align-items:center;gap:14px}
+.nav-logo-img{width:44px;height:44px;object-fit:contain;border-radius:50%;border:1px solid var(--border)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:var(--cream);letter-spacing:.08em}
+.nav-logo em{font-style:italic;color:var(--gold)}
+.nav-links{display:flex;gap:32px}
+.nav-links a{color:var(--text);text-decoration:none;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.45;transition:opacity .2s}
+.nav-links a:hover{opacity:1}
+.nav-right{display:flex;align-items:center;gap:8px}
+.lang-btn{background:transparent;border:1px solid rgba(237,232,223,.15);color:var(--text);padding:6px 13px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .2s;font-family:'Jost',sans-serif}
+.lang-btn.on,.lang-btn:hover{background:var(--red);color:white;border-color:var(--red)}
+.nav-cta{background:linear-gradient(135deg,var(--red),var(--red2));color:white;border:none;padding:10px 24px;font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block}
+.nav-cta:hover{opacity:.85;transform:translateY(-1px)}
+
+/* HERO — cinematic */
+.hero{min-height:100vh;position:relative;display:flex;align-items:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.4) saturate(.8);animation:hzoom 25s ease-out forwards}
+@keyframes hzoom{from{transform:scale(1.06)}to{transform:scale(1.0)}}
+.hero-vignette{position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 50% 50%,transparent 30%,rgba(8,5,4,.7) 100%),linear-gradient(0deg,rgba(8,5,4,.9) 0%,rgba(8,5,4,.2) 60%,rgba(8,5,4,.5) 100%)}
+
+/* Animated musical notes */
+.notes{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.note{position:absolute;font-size:24px;opacity:0;animation:nfloat var(--d,8s) ease-in-out infinite;animation-delay:var(--dl,0s)}
+@keyframes nfloat{0%{opacity:0;transform:translateY(0) rotate(0deg)}20%{opacity:.15}80%{opacity:.05}100%{opacity:0;transform:translateY(-150px) rotate(20deg)}}
+
+.hero-content{position:relative;z-index:2;padding:0 52px;max-width:760px;padding-top:70px}
+.hero-kicker{display:inline-flex;align-items:center;gap:12px;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:28px;opacity:0;animation:sup .9s ease .3s forwards}
+.kicker-line{width:36px;height:1px;background:var(--gold)}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(64px,10vw,120px);font-weight:200;line-height:.9;margin-bottom:12px;opacity:0;animation:sup .9s ease .5s forwards}
+.hero-title em{font-style:italic;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block}
+.hero-tagline{font-family:'Cormorant Garamond',serif;font-size:clamp(16px,2vw,22px);font-weight:200;font-style:italic;color:var(--muted);margin-bottom:32px;opacity:0;animation:sup .9s ease .7s forwards}
+.hero-desc{font-size:15px;line-height:1.85;color:var(--muted);max-width:480px;margin-bottom:44px;opacity:0;animation:sup .9s ease .9s forwards}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:sup .9s ease 1.1s forwards}
+.btn-r{background:linear-gradient(135deg,var(--red),var(--red2));color:white;border:none;padding:16px 40px;font-family:'Jost',sans-serif;font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block}
+.btn-r:hover{opacity:.85;transform:translateY(-2px);box-shadow:0 8px 24px rgba(139,26,42,.4)}
+.btn-g{border:1px solid rgba(237,232,223,.2);color:var(--text);padding:16px 40px;font-family:'Jost',sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;background:transparent;transition:all .3s;text-decoration:none;display:inline-block}
+.btn-g:hover{border-color:var(--gold);color:var(--gold)}
+
+/* Stats float */
+.hero-stats{position:absolute;right:52px;bottom:64px;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:2px;opacity:0;animation:sup .9s ease 1.3s forwards}
+.hstat{background:rgba(237,232,223,.05);backdrop-filter:blur(8px);border:1px solid var(--border);padding:18px 22px;text-align:center}
+.hstat-n{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:200;color:var(--gold);display:block;line-height:1}
+.hstat-l{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+@keyframes sup{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+/* STRIP */
+.strip{background:linear-gradient(90deg,var(--red),var(--red2));padding:12px 0;overflow:hidden}
+.strip-inner{display:flex;gap:48px;animation:mq 22s linear infinite;white-space:nowrap}
+.si{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:white;flex-shrink:0;font-weight:400;display:flex;align-items:center;gap:10px;opacity:.9}
+.si::before{content:'♪';opacity:.6;font-size:10px}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SECTIONS */
+.sec{padding:96px 52px}
+.stag{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.stag::before{content:'';width:28px;height:1px;background:var(--gold)}
+.stitle{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,58px);font-weight:200;line-height:1.06;margin-bottom:20px}
+.stitle em{font-style:italic;color:var(--gold)}
+
+/* STORY */
+.story-sec{background:var(--dark)}
+.story-inner{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:70vh}
+.story-img{position:relative;overflow:hidden}
+.story-img img{width:100%;height:100%;object-fit:cover;display:block;opacity:.7;filter:saturate(.9);transition:transform .8s ease;min-height:500px}
+.story-img:hover img{transform:scale(1.03)}
+.story-img::after{content:'';position:absolute;right:0;top:0;bottom:0;width:80px;background:linear-gradient(to left,var(--dark),transparent)}
+.story-badge{position:absolute;bottom:36px;left:36px;background:var(--red);padding:12px 20px}
+.sb-n{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:200;color:var(--gold2);display:block;line-height:1}
+.sb-l{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.story-txt{padding:72px 60px;display:flex;flex-direction:column;justify-content:center}
+.story-body{font-size:14px;line-height:1.95;color:var(--muted);margin-bottom:24px}
+.story-quote{border-left:3px solid var(--red);padding:14px 20px;font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;line-height:1.7;color:rgba(237,232,223,.65);background:rgba(139,26,42,.06);margin-bottom:24px}
+.story-badges{display:flex;gap:10px;flex-wrap:wrap}
+.sbadge{background:rgba(201,168,76,.07);border:1px solid var(--border);padding:7px 14px;font-size:11px;color:rgba(237,232,223,.55);display:flex;align-items:center;gap:6px}
+
+/* MENU */
+.menu-sec{background:var(--bg)}
+.menu-intro{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px;flex-wrap:wrap;gap:20px}
+.menu-price-badge{background:linear-gradient(135deg,var(--red),var(--red2));color:white;padding:12px 28px;font-family:'Cormorant Garamond',serif;font-size:24px;font-style:italic}
+.menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.mcat{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.04);padding:32px 26px}
+.mcat-title{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:22px;padding-bottom:12px;border-bottom:1px solid rgba(237,232,223,.05)}
+.mi{margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid rgba(237,232,223,.04)}
+.mi:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.mi-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;display:block;margin-bottom:4px}
+.mi-desc{font-size:12px;color:var(--muted);line-height:1.6}
+.mi-tag{font-size:9px;color:var(--red2);letter-spacing:.08em;text-transform:uppercase;margin-top:5px;display:inline-block;border:1px solid rgba(168,32,53,.3);padding:1px 6px}
+
+/* FULL BLEED PHOTO */
+.fullbleed{height:60vh;position:relative;overflow:hidden}
+.fullbleed img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.5) saturate(.8)}
+.fullbleed-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(8,5,4,.7),rgba(139,26,42,.3))}
+.fullbleed-text{position:absolute;top:50%;left:52px;transform:translateY(-50%);max-width:600px}
+.fullbleed-text h2{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,64px);font-weight:200;color:white;line-height:1.1;margin-bottom:16px}
+.fullbleed-text h2 em{font-style:italic;color:var(--gold2)}
+.fullbleed-text p{font-size:14px;color:rgba(255,255,255,.55);line-height:1.8;max-width:440px}
+
+/* GALLERY */
+.gal-sec{background:var(--dark);padding:0}
+.gal-hdr{padding:80px 52px 40px}
+.gal-grid{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:280px 280px;gap:3px}
+.gi{overflow:hidden;position:relative;background:var(--card)}
+.gi:first-child{grid-row:span 2}
+.gi img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.75) saturate(.85);transition:all .6s}
+.gi:hover img{filter:brightness(.95) saturate(1.1);transform:scale(1.04)}
+.gi-lbl{position:absolute;bottom:0;left:0;right:0;padding:28px 18px 14px;background:linear-gradient(transparent,rgba(8,5,4,.9));font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);opacity:0;transition:opacity .4s}
+.gi:hover .gi-lbl{opacity:1}
+.gi-corner{position:absolute;top:12px;left:12px;background:var(--red);color:white;font-size:8px;letter-spacing:.12em;text-transform:uppercase;padding:3px 8px}
+
+/* SERATE */
+.serate{background:var(--bg)}
+.serate-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px}
+.serata{background:var(--dark);border:1px solid rgba(255,255,255,.04);padding:32px 26px;position:relative;overflow:hidden;transition:all .3s}
+.serata::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--red),var(--gold));transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.serata:hover{border-color:var(--border)}.serata:hover::before{transform:scaleX(1)}
+.serata-ico{font-size:36px;margin-bottom:16px;display:block}
+.serata-giorno{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.serata-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;margin-bottom:10px}
+.serata-desc{font-size:13px;color:var(--muted);line-height:1.7}
+
+/* BOOKING */
+.book-sec{background:var(--dark)}
+.book-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.ci-list{display:flex;flex-direction:column;gap:20px;margin-top:28px}
+.ci{display:flex;gap:16px}
+.ci-ico{width:44px;height:44px;flex-shrink:0;border:1px solid var(--border);background:rgba(201,168,76,.06);display:flex;align-items:center;justify-content:center;font-size:16px}
+.ci-l{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
+.ci-v{font-size:13px;color:var(--muted);line-height:1.7}
+.bform{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);padding:40px}
+.fg{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
+.fg label{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(237,232,223,.35)}
+.fg input,.fg select{background:transparent;border:none;border-bottom:1px solid rgba(237,232,223,.1);color:var(--text);padding:10px 0;font-family:'Jost',sans-serif;font-size:13px;outline:none;transition:border-color .2s;width:100%}
+.fg input:focus,.fg select:focus{border-bottom-color:var(--gold)}
+.fg input::placeholder{color:rgba(237,232,223,.18)}
+.fg select option{background:var(--dark)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+footer{background:var(--bg);border-top:1px solid var(--border);padding:48px 52px 24px}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;margin-bottom:36px}
+.foot-logo{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.foot-logo img{width:50px;height:50px;object-fit:contain;border-radius:50%;border:1px solid var(--border)}
+.foot-brand p{font-size:12px;color:var(--muted);line-height:1.8;max-width:240px}
+.foot-col h4{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.foot-col a{display:block;color:var(--muted);text-decoration:none;font-size:12px;margin-bottom:8px;transition:color .2s}
+.foot-col a:hover{color:var(--text)}
+.foot-bottom{border-top:1px solid var(--border);padding-top:18px;display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}
+
+.dbanner{position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(8,5,4,.97);border-top:1px solid var(--border);padding:12px 52px;display:flex;align-items:center;justify-content:space-between;gap:16px;backdrop-filter:blur(12px)}
+.db-t{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:10px}
+.db-badge{font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:var(--red);color:white;padding:3px 10px;font-weight:600}
+.db-btns{display:flex;gap:8px}
+.dbbtn{padding:8px 18px;font-size:10px;font-weight:500;cursor:pointer;border:none;font-family:'Jost',sans-serif;letter-spacing:.06em;text-transform:uppercase;transition:all .2s}
+.dbbtn-p{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--bg)}.dbbtn-p:hover{opacity:.85}
+.dbbtn-s{background:transparent;color:var(--gold);border:1px solid var(--border)}.dbbtn-s:hover{background:rgba(201,168,76,.08)}
+
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+.reveal.vis{opacity:1;transform:translateY(0)}
+
+@media(max-width:768px){
+  nav{padding:0 16px;height:60px}
+  .nav-links{display:none}
+  .hero-content{padding:100px 20px 40px;max-width:100%}
+  .hero-stats{position:relative;right:auto;bottom:auto;margin:0 16px 0;opacity:1;animation:none;grid-template-columns:1fr 1fr}
+  .strip-inner{animation-duration:16s}
+  .sec{padding:60px 20px}
+  .story-inner{grid-template-columns:1fr}
+  .story-img{height:280px;min-height:unset}
+  .story-img::after{display:none}
+  .story-txt{padding:40px 20px}
+  .menu-grid{grid-template-columns:1fr}
+  .menu-intro{flex-direction:column}
+  .fullbleed-text{left:20px;right:20px}
+  .gal-hdr{padding:60px 20px 28px}
+  .gal-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .gi:first-child{grid-row:1;grid-column:span 2;height:220px}
+  .gi{height:160px}
+  .serate-grid{grid-template-columns:1fr}
+  .book-inner{grid-template-columns:1fr;gap:40px}
+  .bform{padding:28px 16px}
+  .frow{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr;gap:28px}
+  .foot-bottom{flex-direction:column;gap:6px}
+  .dbanner{padding:10px 16px;flex-direction:column;align-items:flex-start;gap:8px}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-logo-wrap">
+    <img class="nav-logo-img" src="img/logo.jpg" alt="Logo"/>
+    <span class="nav-logo">Bistrot<em>Enoteca</em></span>
+  </div>
+  <div class="nav-links">
+    <a href="#storia" class="t" data-key="nav_story">Il locale</a>
+    <a href="#menu" class="t" data-key="nav_menu">Menu</a>
+    <a href="#galleria" class="t" data-key="nav_gal">Galleria</a>
+    <a href="#serate" class="t" data-key="nav_ev">Serate</a>
+    <a href="#prenota" class="t" data-key="nav_book">Prenota</a>
+  </div>
+  <div class="nav-right">
+    <button class="lang-btn on" onclick="setLang('it',this)">IT</button>
+    <button class="lang-btn" onclick="setLang('en',this)">EN</button>
+    <a href="#prenota" class="nav-cta t" data-key="nav_cta">Prenota</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"><img src="img/hero.jpg" alt="BistrotEnoteca jazz"/></div>
+  <div class="hero-vignette"></div>
+  <div class="notes" id="notes"></div>
+  <div class="hero-content">
+    <div class="hero-kicker"><div class="kicker-line"></div><span class="t" data-key="kicker">Santa Domenica Talao · Cucine del mondo · Musica dal vivo</span></div>
+    <h1 class="hero-title">Bistrot<br><em>Enoteca</em><br>del Corso</h1>
+    <p class="hero-tagline t" data-key="tagline">Ogni sera una cucina diversa · Ogni sera un'esperienza</p>
+    <p class="hero-desc t" data-key="hero_desc">Libanese, marocchina, messicana, brasiliana. Hugo e Wilma trasformano ogni serata in un viaggio culinario unico. Con musica dal vivo e vini selezionati.</p>
+    <div class="hero-btns">
+      <a href="#menu" class="btn-r t" data-key="btn1">Scopri il menu di stasera</a>
+      <a href="#prenota" class="btn-g t" data-key="btn2">Prenota un tavolo</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hstat"><span class="hstat-n">5.0</span><div class="hstat-l">Google ★</div></div>
+    <div class="hstat"><span class="hstat-n">€20</span><div class="hstat-l t" data-key="st1">A persona</div></div>
+    <div class="hstat"><span class="hstat-n">4+</span><div class="hstat-l t" data-key="st2">Cucine</div></div>
+    <div class="hstat"><span class="hstat-n">♪</span><div class="hstat-l t" data-key="st3">Live music</div></div>
+  </div>
+</section>
+
+<div class="strip">
+  <div class="strip-inner">
+    <span class="si t" data-key="s1">Cucine del mondo ogni sera</span>
+    <span class="si t" data-key="s2">Musica jazz dal vivo</span>
+    <span class="si">★ 5.0 Google · Santa Domenica Talao</span>
+    <span class="si t" data-key="s3">Menu €20 a persona</span>
+    <span class="si t" data-key="s4">Hugo e Wilma vi aspettano</span>
+    <span class="si t" data-key="s1">Cucine del mondo ogni sera</span>
+    <span class="si t" data-key="s2">Musica jazz dal vivo</span>
+    <span class="si">★ 5.0 Google · Santa Domenica Talao</span>
+    <span class="si t" data-key="s3">Menu €20 a persona</span>
+    <span class="si t" data-key="s4">Hugo e Wilma vi aspettano</span>
+  </div>
+</div>
+
+<!-- STORIA -->
+<section id="storia" style="background:var(--dark);padding:0">
+  <div class="story-inner">
+    <div class="story-img reveal">
+      <img src="img/p4.jpg" alt="La serata"/>
+      <div class="story-badge">
+        <span class="sb-n">5.0</span>
+        <span class="sb-l">Google ★★★★★</span>
+      </div>
+    </div>
+    <div class="story-txt reveal">
+      <p class="stag t" data-key="st_tag">Il locale</p>
+      <h2 class="stitle t" data-key="st_title">Un viaggio nel<br><em>mondo</em> ogni sera</h2>
+      <p class="story-body t" data-key="st_body">Nel borgo medievale di Santa Domenica Talao, Hugo e Wilma hanno creato qualcosa di unico. Ogni sera una cucina diversa — libanese, marocchina, messicana, brasiliana — preparata con ingredienti freschi e autentica passione. La musica dal vivo completa un'esperienza che non si dimentica.</p>
+      <div class="story-quote t" data-key="st_quote">"Nested within the winding streets of Santa Domenica Talao lies a dining revelation that transforms the very notion of international cuisine." — Ospite internazionale ★★★★★</div>
+      <div class="story-badges">
+        <div class="sbadge">🌍 <span class="t" data-key="b1">Cucine del mondo</span></div>
+        <div class="sbadge">🎸 <span class="t" data-key="b2">Jazz dal vivo</span></div>
+        <div class="sbadge">🍷 <span class="t" data-key="b3">Enoteca selezionata</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="sec menu-sec" id="menu">
+  <div class="menu-intro reveal">
+    <div>
+      <p class="stag t" data-key="m_tag">Cucina di stagione</p>
+      <h2 class="stitle t" data-key="m_title">Il <em>menu</em> di stasera</h2>
+      <p style="font-size:13px;color:var(--muted);max-width:420px;line-height:1.7" class="t" data-key="m_note">Il menu cambia ogni sera. Seguite i nostri social per scoprire la cucina di stasera — o lasciatevi sorprendere.</p>
+    </div>
+    <div class="menu-price-badge t" data-key="m_price">€20 a persona · tutto incluso</div>
+  </div>
+  <div class="menu-grid">
+    <div class="mcat reveal">
+      <div class="mcat-title t" data-key="c1">Antipasti</div>
+      <div class="mi"><span class="mi-name t" data-key="d1">Tagliere internazionale</span><div class="mi-desc t" data-key="d1d">Formaggi, salumi, olive, pane · cambia ogni sera</div><span class="mi-tag t" data-key="d1t">della casa</span></div>
+      <div class="mi"><span class="mi-name t" data-key="d2">Zuppa del giorno</span><div class="mi-desc t" data-key="d2d">Ingredienti freschi di stagione, preparata da Wilma</div></div>
+      <div class="mi"><span class="mi-name t" data-key="d3">Tartare della casa</span><div class="mi-desc t" data-key="d3d">Carne selezionata, erba cipollina, olio EVO calabrese</div><span class="mi-tag t" data-key="d3t">speciale</span></div>
+    </div>
+    <div class="mcat reveal">
+      <div class="mcat-title t" data-key="c2">Piatti principali</div>
+      <div class="mi"><span class="mi-name t" data-key="d4">Piatto della serata</span><div class="mi-desc t" data-key="d4d">Cambia ogni sera: libanese, marocchino, messicano, brasiliano</div><span class="mi-tag t" data-key="d4t">rotante</span></div>
+      <div class="mi"><span class="mi-name t" data-key="d5">Carne alla brace</span><div class="mi-desc t" data-key="d5d">Con verdure grigliate e salsa della casa</div></div>
+      <div class="mi"><span class="mi-name t" data-key="d6">Ricotta e verdure</span><div class="mi-desc t" data-key="d6d">Ricotta fresca locale, carote al miele, pane bruschettato</div></div>
+    </div>
+    <div class="mcat reveal">
+      <div class="mcat-title t" data-key="c3">Dolci & Cantina</div>
+      <div class="mi"><span class="mi-name t" data-key="d7">Dolce del giorno</span><div class="mi-desc t" data-key="d7d">Preparato dalla cucina secondo ispirazione</div></div>
+      <div class="mi"><span class="mi-name t" data-key="d8">Selezione di vini</span><div class="mi-desc t" data-key="d8d">Rosso, bianco e rosato · cantina curata da Hugo</div></div>
+      <div class="mi"><span class="mi-name t" data-key="d9">Cocktail della casa</span><div class="mi-desc t" data-key="d9d">Creazioni originali · chiedi al bancone</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FULL BLEED -->
+<div class="fullbleed">
+  <img src="img/p1.jpg" alt="Piatto della casa"/>
+  <div class="fullbleed-overlay"></div>
+  <div class="fullbleed-text">
+    <h2 class="t" data-key="fb_title">La cucina che<br>cambia <em>ogni sera</em></h2>
+    <p class="t" data-key="fb_desc">Seguite i nostri social per scoprire la cucina di stasera. Ogni serata è diversa, ogni piatto racconta una storia che viene da lontano.</p>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<section class="gal-sec" id="galleria">
+  <div class="gal-hdr reveal">
+    <p class="stag t" data-key="g_tag">Fotografie</p>
+    <h2 class="stitle t" data-key="g_title">Le nostre <em>serate</em></h2>
+  </div>
+  <div class="gal-grid">
+    <div class="gi"><img src="img/logo.jpg" alt=""/><div class="gi-lbl t" data-key="g1">Ricotta con noci e caviale</div><div class="gi-corner t" data-key="gf1">Antipasto</div></div>
+    <div class="gi"><img src="img/p3.jpg" alt=""/><div class="gi-lbl t" data-key="g2">Tacos della serata messicana</div></div>
+    <div class="gi"><img src="img/p6.jpg" alt=""/><div class="gi-lbl t" data-key="g3">Carne con salsa della casa</div></div>
+    <div class="gi"><img src="img/p2.jpg" alt=""/><div class="gi-lbl t" data-key="g4">Antipasti di stagione</div></div>
+    <div class="gi"><img src="img/p7.jpg" alt=""/><div class="gi-lbl t" data-key="g5">Tartare della casa</div></div>
+  </div>
+</section>
+
+<!-- SERATE -->
+<section class="sec serate" id="serate">
+  <div class="reveal" style="text-align:center;margin-bottom:0">
+    <p class="stag t" style="justify-content:center" data-key="se_tag">Ogni sera è speciale</p>
+    <h2 class="stitle t" data-key="se_title">Le nostre <em>serate</em></h2>
+  </div>
+  <div class="serate-grid">
+    <div class="serata reveal"><span class="serata-ico">🎸</span><div class="serata-giorno t" data-key="ev1g">Ogni venerdì</div><div class="serata-title t" data-key="ev1t">Jazz & Musica dal vivo</div><div class="serata-desc t" data-key="ev1d">Musicisti locali si esibiscono durante la cena. Un'atmosfera unica che non troverete altrove a Santa Domenica Talao.</div></div>
+    <div class="serata reveal"><span class="serata-ico">🌍</span><div class="serata-giorno t" data-key="ev2g">Ogni sabato</div><div class="serata-title t" data-key="ev2t">Serata tematica</div><div class="serata-desc t" data-key="ev2d">Una cucina diversa ogni sabato — libanese, marocchina, messicana, brasiliana. Seguite i social per scoprire la prossima destinazione.</div></div>
+    <div class="serata reveal"><span class="serata-ico">🍷</span><div class="serata-giorno t" data-key="ev3g">Ogni domenica</div><div class="serata-title t" data-key="ev3t">Aperitivo in enoteca</div><div class="serata-desc t" data-key="ev3d">Selezione di vini calabresi con stuzzichini. Hugo vi guiderà nella scelta del vino perfetto per voi.</div></div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section class="sec book-sec" id="prenota">
+  <div class="book-inner">
+    <div class="reveal">
+      <p class="stag t" data-key="bk_tag">Vieni a trovarci</p>
+      <h2 class="stitle t" data-key="bk_title">Prenota il tuo<br><em>tavolo</em></h2>
+      <p style="font-size:14px;color:var(--muted);line-height:1.9;max-width:340px;margin-bottom:8px" class="t" data-key="bk_sub">I posti sono limitati — prenotare è consigliato. Hugo e Wilma vi aspettano questa sera.</p>
+      <div class="ci-list">
+        <div class="ci"><div class="ci-ico">📞</div><div><div class="ci-l">WhatsApp / Tel</div><div class="ci-v"><a href="tel:+393421843929" style="color:var(--gold);text-decoration:none">+39 342 184 3929</a></div></div></div>
+        <div class="ci"><div class="ci-ico">📍</div><div><div class="ci-l t" data-key="ci1">Indirizzo</div><div class="ci-v">Via del Corso · Santa Domenica Talao (CS)</div></div></div>
+        <div class="ci"><div class="ci-ico">🕐</div><div><div class="ci-l t" data-key="ci2">Orari</div><div class="ci-v t" data-key="ci2v">Ogni sera 18:00 – 00:00<br>Lunedì chiuso</div></div></div>
+        <div class="ci"><div class="ci-ico">📱</div><div><div class="ci-l t" data-key="ci3">Social</div><div class="ci-v t" data-key="ci3v">Seguiteci su Instagram e Facebook<br>per la cucina di stasera</div></div></div>
+      </div>
+    </div>
+    <div class="bform reveal">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:200;margin-bottom:6px"><span class="t" data-key="f_t1">Prenota</span> <em style="font-style:italic;color:var(--gold)" class="t" data-key="f_t2">il tuo tavolo</em></h3>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:28px" class="t" data-key="f_sub">Vi risponderemo a breve per confermare</p>
+      <div class="frow">
+        <div class="fg"><label class="t" data-key="f_name">Nome</label><input type="text" placeholder="Mario"/></div>
+        <div class="fg"><label class="t" data-key="f_surn">Cognome</label><input type="text" placeholder="Rossi"/></div>
+      </div>
+      <div class="fg"><label>Tel / WhatsApp</label><input type="text" placeholder="+39 342 184 3929"/></div>
+      <div class="frow">
+        <div class="fg"><label class="t" data-key="f_date">Data</label><input type="date"/></div>
+        <div class="fg"><label class="t" data-key="f_gst">Persone</label><select><option>2</option><option selected>3–4</option><option>5–6</option><option>7+</option></select></div>
+      </div>
+      <div class="fg"><label class="t" data-key="f_note">Note speciali</label><input type="text" placeholder="Allergie, occasioni..."/></div>
+      <button style="width:100%;background:linear-gradient(135deg,var(--red),var(--red2));color:white;border:none;padding:15px;font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-top:8px;transition:opacity .2s" onclick="alert(window._lang==='en'?'✓ Booking request sent! Hugo and Wilma will contact you shortly.':'✓ Richiesta inviata! Hugo e Wilma vi contatteranno a breve.')" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+        <span class="t" data-key="f_btn">Invia richiesta →</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-grid">
+    <div>
+      <div class="foot-logo"><img src="img/logo.jpg" alt="Logo"/><span class="nav-logo" style="display:inline">Bistrot<em>Enoteca</em></span></div>
+      <p class="t" data-key="ft_desc">Cucine del mondo nel cuore di Santa Domenica Talao. Ogni sera un viaggio con Hugo e Wilma. Musica dal vivo, vini selezionati.</p>
+    </div>
+    <div class="foot-col">
+      <h4 class="t" data-key="ft_h1">Il locale</h4>
+      <a href="#storia" class="t" data-key="ft_story">Il nostro locale</a>
+      <a href="#menu">Menu</a>
+      <a href="#galleria" class="t" data-key="ft_gal">Galleria</a>
+      <a href="#serate" class="t" data-key="ft_ev">Serate speciali</a>
+      <a href="#prenota" class="t" data-key="ft_book">Prenota</a>
+    </div>
+    <div class="foot-col">
+      <h4 class="t" data-key="ft_h2">Contatti</h4>
+      <a href="tel:+393421843929">+39 342 184 3929</a>
+      <a href="#">Via del Corso · Santa Domenica Talao</a>
+      <a href="#">Instagram · Facebook</a>
+      <a href="#">Privacy Policy</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2025 BistrotEnoteca Del Corso · Santa Domenica Talao (CS)</span>
+    <span style="color:var(--gold);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px">★ 5.0 · Cucine del mondo</span>
+  </div>
+</footer>
+
+<div class="dbanner" id="db">
+  <div class="db-t"><span class="db-badge">Demo</span><span class="t" data-key="dm_t">Versione <strong style="color:var(--gold)">"Notte di Jazz"</strong> — BistrotEnoteca Del Corso</span></div>
+  <div class="db-btns">
+    <button class="dbbtn dbbtn-s" onclick="document.getElementById('db').style.display='none'">✕</button>
+    <button class="dbbtn dbbtn-p t" data-key="dm_btn" onclick="alert('Contattaci per attivare il sito!')">Voglio questo sito →</button>
+  </div>
+</div>
+
+<script>
+const T={
+  it:{
+    nav_story:'Il locale',nav_menu:'Menu',nav_gal:'Galleria',nav_ev:'Serate',nav_book:'Prenota',nav_cta:'Prenota',
+    kicker:'Santa Domenica Talao · Cucine del mondo · Musica dal vivo',
+    tagline:'Ogni sera una cucina diversa · Ogni sera un\'esperienza',
+    hero_desc:'Libanese, marocchina, messicana, brasiliana. Hugo e Wilma trasformano ogni serata in un viaggio culinario unico. Con musica dal vivo e vini selezionati.',
+    btn1:'Scopri il menu di stasera',btn2:'Prenota un tavolo',
+    st1:'A persona',st2:'Cucine',st3:'Live music',
+    s1:'Cucine del mondo ogni sera',s2:'Musica jazz dal vivo',s3:'Menu €20 a persona',s4:'Hugo e Wilma vi aspettano',
+    st_tag:'Il locale',st_title:'Un viaggio nel<br><em>mondo</em> ogni sera',
+    st_body:'Nel borgo medievale di Santa Domenica Talao, Hugo e Wilma hanno creato qualcosa di unico. Ogni sera una cucina diversa, musica dal vivo e vini selezionati. Un\'esperienza che non si dimentica.',
+    st_quote:'"Nested within the winding streets of Santa Domenica Talao lies a dining revelation that transforms the very notion of international cuisine." — Ospite internazionale ★★★★★',
+    b1:'Cucine del mondo',b2:'Jazz dal vivo',b3:'Enoteca selezionata',
+    m_tag:'Cucina di stagione',m_title:'Il <em>menu</em> di stasera',
+    m_note:'Il menu cambia ogni sera. Seguite i social per la cucina di stasera.',
+    m_price:'€20 a persona · tutto incluso',
+    c1:'Antipasti',c2:'Piatti principali',c3:'Dolci & Cantina',
+    d1:'Tagliere internazionale',d1d:'Formaggi, salumi, olive, pane · cambia ogni sera',d1t:'della casa',
+    d2:'Zuppa del giorno',d2d:'Ingredienti freschi di stagione, preparata da Wilma',
+    d3:'Tartare della casa',d3d:'Carne selezionata, erba cipollina, olio EVO calabrese',d3t:'speciale',
+    d4:'Piatto della serata',d4d:'Cambia ogni sera: libanese, marocchino, messicano, brasiliano',d4t:'rotante',
+    d5:'Carne alla brace',d5d:'Con verdure grigliate e salsa della casa',
+    d6:'Ricotta e verdure',d6d:'Ricotta fresca locale, carote al miele, pane bruschettato',
+    d7:'Dolce del giorno',d7d:'Preparato dalla cucina secondo ispirazione',
+    d8:'Selezione di vini',d8d:'Rosso, bianco e rosato · cantina curata da Hugo',
+    d9:'Cocktail della casa',d9d:'Creazioni originali · chiedi al bancone',
+    fb_title:'La cucina che<br>cambia <em>ogni sera</em>',
+    fb_desc:'Seguite i social per scoprire la cucina di stasera. Ogni serata è diversa, ogni piatto racconta una storia.',
+    g_tag:'Fotografie',g_title:'Le nostre <em>serate</em>',
+    g1:'Ricotta con noci e caviale',gf1:'Antipasto',g2:'Tacos della serata messicana',
+    g3:'Carne con salsa della casa',g4:'Antipasti di stagione',g5:'Tartare della casa',
+    se_tag:'Ogni sera è speciale',se_title:'Le nostre <em>serate</em>',
+    ev1g:'Ogni venerdì',ev1t:'Jazz & Musica dal vivo',ev1d:'Musicisti locali durante la cena. Un\'atmosfera unica.',
+    ev2g:'Ogni sabato',ev2t:'Serata tematica',ev2d:'Una cucina diversa ogni sabato. Seguite i social per la prossima.',
+    ev3g:'Ogni domenica',ev3t:'Aperitivo in enoteca',ev3d:'Vini calabresi con stuzzichini. Hugo vi guida nella scelta.',
+    bk_tag:'Vieni a trovarci',bk_title:'Prenota il tuo<br><em>tavolo</em>',
+    bk_sub:'I posti sono limitati. Hugo e Wilma vi aspettano questa sera.',
+    ci1:'Indirizzo',ci2:'Orari',ci2v:'Ogni sera 18:00 – 00:00<br>Lunedì chiuso',
+    ci3:'Social',ci3v:'Seguiteci su Instagram e Facebook<br>per la cucina di stasera',
+    f_t1:'Prenota',f_t2:'il tuo tavolo',f_sub:'Vi risponderemo a breve per confermare',
+    f_name:'Nome',f_surn:'Cognome',f_date:'Data',f_gst:'Persone',f_note:'Note speciali',f_btn:'Invia richiesta →',
+    ft_desc:'Cucine del mondo a Santa Domenica Talao. Ogni sera con Hugo e Wilma.',
+    ft_h1:'Il locale',ft_story:'Il nostro locale',ft_gal:'Galleria',ft_ev:'Serate speciali',ft_book:'Prenota',ft_h2:'Contatti',
+    dm_t:'Versione <strong style="color:var(--gold)">"Notte di Jazz"</strong> — BistrotEnoteca Del Corso',
+    dm_btn:'Voglio questo sito →'
+  },
+  en:{
+    nav_story:'The place',nav_menu:'Menu',nav_gal:'Gallery',nav_ev:'Events',nav_book:'Book',nav_cta:'Book a table',
+    kicker:'Santa Domenica Talao · World cuisines · Live music',
+    tagline:'Every night a different cuisine · Every night an experience',
+    hero_desc:'Lebanese, Moroccan, Mexican, Brazilian. Hugo and Wilma transform every evening into a unique culinary journey. With live music and selected wines.',
+    btn1:'Discover tonight\'s menu',btn2:'Book a table',
+    st1:'Per person',st2:'Cuisines',st3:'Live music',
+    s1:'World cuisines every evening',s2:'Live jazz music',s3:'Menu €20 per person',s4:'Hugo and Wilma are waiting',
+    st_tag:'The place',st_title:'A journey around the<br><em>world</em> every evening',
+    st_body:'In the medieval village of Santa Domenica Talao, Hugo and Wilma have created something truly unique. Every evening a different cuisine, live music and selected wines. An experience you won\'t forget.',
+    st_quote:'"Nested within the winding streets of Santa Domenica Talao lies a dining revelation that transforms the very notion of international cuisine." — International guest ★★★★★',
+    b1:'World cuisines',b2:'Live jazz',b3:'Selected wine cellar',
+    m_tag:'Seasonal cuisine',m_title:'Tonight\'s <em>menu</em>',
+    m_note:'The menu changes every evening. Follow our social media for tonight\'s cuisine.',
+    m_price:'€20 per person · all included',
+    c1:'Starters',c2:'Main courses',c3:'Desserts & Wine cellar',
+    d1:'International charcuterie',d1d:'Cheeses, cured meats, olives, bread · changes every evening',d1t:'house special',
+    d2:'Soup of the day',d2d:'Fresh seasonal ingredients, prepared by Wilma',
+    d3:'House tartare',d3d:'Selected meat, chives, Calabrian extra virgin olive oil',d3t:'special',
+    d4:'Evening dish',d4d:'Changes every evening: Lebanese, Moroccan, Mexican, Brazilian',d4t:'rotating',
+    d5:'Grilled meat',d5d:'With seasonal grilled vegetables and house sauce',
+    d6:'Ricotta & vegetables',d6d:'Fresh local ricotta, honey-glazed carrots, bruschetta',
+    d7:'Dessert of the day',d7d:'Prepared by the kitchen according to inspiration',
+    d8:'Selected wines',d8d:'Red, white and rosé · cellar curated by Hugo',
+    d9:'House cocktail',d9d:'Original creations · ask at the bar',
+    fb_title:'The cuisine that<br>changes <em>every evening</em>',
+    fb_desc:'Follow our social media to discover tonight\'s cuisine. Every evening is different.',
+    g_tag:'Photography',g_title:'Our <em>evenings</em>',
+    g1:'Ricotta with walnuts and caviar',gf1:'Starter',g2:'Tacos from Mexican evening',
+    g3:'Meat with house sauce',g4:'Seasonal starters',g5:'House tartare',
+    se_tag:'Every evening is special',se_title:'Our special <em>evenings</em>',
+    ev1g:'Every Friday',ev1t:'Jazz & Live music',ev1d:'Local musicians perform during dinner. A unique atmosphere.',
+    ev2g:'Every Saturday',ev2t:'Themed evening',ev2d:'A different cuisine every Saturday. Follow social media for the next one.',
+    ev3g:'Every Sunday',ev3t:'Wine bar aperitivo',ev3d:'Calabrian wines with appetizers. Hugo guides your wine choice.',
+    bk_tag:'Find us',bk_title:'Book your<br><em>table</em>',
+    bk_sub:'Seats are limited. Hugo and Wilma are waiting for you this evening.',
+    ci1:'Address',ci2:'Hours',ci2v:'Every evening 18:00 – 00:00<br>Monday closed',
+    ci3:'Social media',ci3v:'Follow us on Instagram and Facebook<br>for tonight\'s cuisine',
+    f_t1:'Book',f_t2:'your table',f_sub:'We will reply shortly to confirm',
+    f_name:'First name',f_surn:'Last name',f_date:'Date',f_gst:'Guests',f_note:'Special requests',f_btn:'Send request →',
+    ft_desc:'World cuisines in Santa Domenica Talao. Every evening with Hugo and Wilma.',
+    ft_h1:'The restaurant',ft_story:'Our place',ft_gal:'Gallery',ft_ev:'Special evenings',ft_book:'Book',ft_h2:'Contact',
+    dm_t:'Version <strong style="color:var(--gold)">"Notte di Jazz"</strong> — BistrotEnoteca Del Corso',
+    dm_btn:'I want this website →'
+  }
+};
+
+window._lang='it';
+function setLang(lang,btn){
+  window._lang=lang;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.t[data-key]').forEach(el=>{
+    const v=T[lang][el.dataset.key];
+    if(v!==undefined) el.innerHTML=v;
+  });
+}
+
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('solid',window.scrollY>60));
+
+// Musical notes
+const nc=document.getElementById('notes');
+['♪','♫','♩','♬'].forEach((n,i)=>{
+  for(let j=0;j<4;j++){
+    const el=document.createElement('div');el.className='note';el.textContent=n;
+    el.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;color:var(--gold);--d:${Math.random()*8+6}s;--dl:${Math.random()*10}s`;
+    nc.appendChild(el);
+  }
+});
+
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('vis'),i*70)});
+},{threshold:.07});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
