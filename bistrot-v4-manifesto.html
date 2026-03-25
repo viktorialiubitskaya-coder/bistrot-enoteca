@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BistrotEnoteca Del Corso</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Syne:wght@400;500;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0A0A0A;--ink:#F5F0E8;--red:#8B1A2A;--red2:#C42040;
+  --gold:#C9A84C;--gold2:#E8C870;
+  --muted:rgba(245,240,232,.38);--border:rgba(245,240,232,.08);
+  --mid:#141414;--dark:#0E0E0E;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Syne',sans-serif;font-weight:400;overflow-x:hidden}
+
+/* LANG */
+[data-en]{display:none}
+body.en [data-it]{display:none}
+body.en [data-en]{display:block}
+body.en span[data-en]{display:inline}
+body.en span[data-it]{display:none}
+
+/* SCROLL PROGRESS */
+.sp{position:fixed;top:0;left:0;right:0;z-index:999;height:3px;background:linear-gradient(90deg,var(--red),var(--gold));width:0;transition:width .1s linear}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:24px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:all .4s;
+}
+nav.solid{background:rgba(10,10,10,.96);backdrop-filter:blur(16px);padding:16px 48px;border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Anton',sans-serif;font-size:22px;letter-spacing:.08em;color:var(--ink);text-transform:uppercase}
+.nav-logo span{color:var(--red)}
+.nav-links{display:flex;gap:36px}
+.nav-links a{color:var(--ink);text-decoration:none;font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.4;transition:all .2s;font-weight:500}
+.nav-links a:hover{opacity:1}
+.nav-r{display:flex;align-items:center;gap:10px}
+.lb{background:transparent;border:1px solid var(--border);color:var(--ink);padding:6px 14px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .2s;font-family:'Syne',sans-serif}
+.lb.on,.lb:hover{background:var(--red);color:white;border-color:var(--red)}
+.nav-cta{background:var(--red);color:white;border:none;padding:10px 24px;font-family:'Syne',sans-serif;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block}
+.nav-cta:hover{background:var(--red2);transform:translateY(-1px)}
+
+/* ═══ HERO ═══ */
+.hero{
+  min-height:100vh;position:relative;
+  display:grid;grid-template-columns:1fr 1fr;
+  overflow:hidden;
+}
+
+/* Left — text */
+.hero-l{
+  position:relative;z-index:2;
+  padding:140px 48px 80px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  background:var(--bg);
+}
+.hero-number{
+  font-family:'Anton',sans-serif;font-size:clamp(120px,18vw,220px);
+  line-height:.85;color:rgba(245,240,232,.04);
+  position:absolute;top:40px;left:-20px;
+  pointer-events:none;letter-spacing:-.02em;
+  animation:nbob 6s ease-in-out infinite;
+}
+@keyframes nbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+.hero-tag{
+  font-family:'Syne Mono',monospace;font-size:10px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--red);margin-bottom:24px;
+  display:flex;align-items:center;gap:10px;
+}
+.hero-tag::before{content:'';width:24px;height:2px;background:var(--red)}
+
+.hero-title{
+  font-family:'Anton',sans-serif;
+  font-size:clamp(52px,7vw,88px);
+  line-height:.92;letter-spacing:-.01em;
+  text-transform:uppercase;
+  margin-bottom:28px;
+}
+.hero-title .accent{
+  display:block;
+  -webkit-text-stroke:2px var(--red);
+  color:transparent;
+}
+.hero-title .solid{display:block;color:var(--ink)}
+
+.hero-desc{
+  font-size:15px;line-height:1.8;color:var(--muted);
+  max-width:380px;margin-bottom:40px;font-weight:400;
+}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-fill{
+  background:var(--red);color:white;border:none;
+  padding:16px 36px;font-family:'Syne',sans-serif;font-size:11px;
+  font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block;
+}
+.btn-fill:hover{background:var(--red2);transform:translateY(-2px);box-shadow:0 8px 28px rgba(139,26,42,.5)}
+.btn-stroke{
+  border:2px solid var(--ink);color:var(--ink);
+  padding:16px 36px;font-family:'Syne',sans-serif;font-size:11px;
+  font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  cursor:pointer;background:transparent;transition:all .3s;
+  text-decoration:none;display:inline-block;
+}
+.btn-stroke:hover{background:var(--ink);color:var(--bg)}
+
+/* Stats bar at bottom of hero-l */
+.hero-stats{
+  display:flex;gap:0;margin-top:48px;
+  border-top:1px solid var(--border);padding-top:24px;
+}
+.hs{flex:1;border-right:1px solid var(--border);padding-right:16px;margin-right:16px}
+.hs:last-child{border-right:none}
+.hs-n{font-family:'Anton',sans-serif;font-size:32px;color:var(--gold);display:block;line-height:1}
+.hs-l{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+
+/* Right — photo grid */
+.hero-r{
+  position:relative;overflow:hidden;
+  display:grid;grid-template-rows:1fr 1fr;
+  gap:3px;background:var(--dark);
+}
+.hero-r-top,.hero-r-bot{position:relative;overflow:hidden}
+.hero-r-top img,.hero-r-bot img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  filter:brightness(.6) saturate(.8);
+  transition:transform .8s ease,filter .4s;
+}
+.hero-r-top:hover img,.hero-r-bot:hover img{transform:scale(1.04);filter:brightness(.8) saturate(1)}
+.hero-r-label{
+  position:absolute;bottom:16px;left:16px;
+  background:var(--red);color:white;
+  font-family:'Syne',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;padding:5px 12px;
+}
+
+/* ═══ STRIP ═══ */
+.strip{background:var(--red);padding:14px 0;overflow:hidden}
+.strip-inner{display:flex;gap:0;animation:mq 18s linear infinite;white-space:nowrap}
+.si{
+  font-family:'Anton',sans-serif;font-size:13px;letter-spacing:.08em;
+  text-transform:uppercase;color:white;flex-shrink:0;
+  padding:0 32px;border-right:1px solid rgba(255,255,255,.2);
+  display:flex;align-items:center;gap:12px;
+}
+.si span{color:rgba(255,255,255,.4)}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ═══ ABOUT — ASYMMETRIC ═══ */
+.about{
+  display:grid;grid-template-columns:5fr 7fr;
+  min-height:90vh;background:var(--mid);
+}
+.about-l{
+  padding:80px 48px;
+  display:flex;flex-direction:column;justify-content:center;
+  border-right:1px solid var(--border);
+}
+.about-number{
+  font-family:'Anton',sans-serif;font-size:200px;
+  color:rgba(245,240,232,.03);line-height:1;
+  margin-bottom:-60px;margin-left:-10px;
+}
+.sec-label{
+  font-family:'Syne Mono',monospace;
+  font-size:9px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
+}
+.sec-label::after{content:'';flex:1;height:1px;background:rgba(245,240,232,.08)}
+.sec-title{
+  font-family:'Anton',sans-serif;
+  font-size:clamp(40px,5vw,64px);
+  text-transform:uppercase;line-height:.92;
+  margin-bottom:24px;letter-spacing:-.01em;
+}
+.sec-title .red{color:var(--red)}
+.sec-body{font-size:14px;line-height:1.9;color:var(--muted);margin-bottom:24px}
+.sec-quote{
+  font-family:'Syne',sans-serif;font-size:16px;font-weight:600;
+  line-height:1.6;color:var(--ink);
+  border-left:4px solid var(--red);padding:16px 20px;
+  background:rgba(139,26,42,.08);margin-bottom:28px;
+}
+.tags{display:flex;gap:8px;flex-wrap:wrap}
+.tag{
+  background:rgba(245,240,232,.05);border:1px solid var(--border);
+  padding:6px 14px;font-size:10px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  transition:all .2s;
+}
+.tag:hover{border-color:var(--red);color:var(--red)}
+
+.about-r{
+  display:grid;grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr 1fr;gap:3px;
+}
+.agrid-item{overflow:hidden;position:relative}
+.agrid-item img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.55) saturate(.8);transition:all .6s}
+.agrid-item:hover img{filter:brightness(.8) saturate(1);transform:scale(1.04)}
+.agrid-item:first-child{grid-row:span 2}
+.agrid-cap{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:24px 18px 14px;
+  background:linear-gradient(transparent,rgba(10,10,10,.9));
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold);opacity:0;transition:opacity .4s;
+}
+.agrid-item:hover .agrid-cap{opacity:1}
+
+/* ═══ MENU — FULL WIDTH ═══ */
+.menu-sec{background:var(--bg);padding:100px 48px;position:relative;overflow:hidden}
+.menu-bg-text{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Anton',sans-serif;font-size:clamp(150px,22vw,280px);
+  color:rgba(245,240,232,.02);white-space:nowrap;pointer-events:none;
+  letter-spacing:-.02em;text-transform:uppercase;
+}
+.menu-header{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-bottom:60px;position:relative;z-index:1;flex-wrap:wrap;gap:20px;
+}
+.menu-price{
+  font-family:'Anton',sans-serif;font-size:80px;color:var(--red);
+  line-height:1;letter-spacing:-.02em;
+}
+.menu-price-sub{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.menu-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);
+  position:relative;z-index:1;
+}
+.mcat{background:var(--bg);padding:40px 32px}
+.mcat-n{
+  font-family:'Anton',sans-serif;font-size:48px;
+  color:rgba(245,240,232,.06);line-height:1;margin-bottom:-10px;
+}
+.mcat-title{
+  font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--gold);
+  margin-bottom:28px;padding-bottom:12px;
+  border-bottom:2px solid var(--red);display:inline-block;
+}
+.mi{margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid var(--border)}
+.mi:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.mi-name{
+  font-family:'Syne',sans-serif;font-size:17px;font-weight:700;
+  display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.02em;
+}
+.mi-desc{font-size:12px;color:var(--muted);line-height:1.6;font-weight:400}
+.mi-tag{
+  display:inline-block;font-size:8px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--red);border:1px solid var(--red);
+  padding:2px 8px;margin-top:6px;
+}
+
+/* ═══ GALLERY — MASONRY FEEL ═══ */
+.gal-sec{background:var(--mid);padding:100px 0}
+.gal-header{padding:0 48px 48px;display:flex;justify-content:space-between;align-items:flex-end}
+.gal-hint{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-family:'Syne Mono',monospace}
+.gal-track{
+  display:flex;gap:4px;overflow-x:auto;
+  padding:0 48px;scroll-snap-type:x mandatory;
+  scrollbar-width:none;cursor:grab;
+}
+.gal-track:active{cursor:grabbing}
+.gal-track::-webkit-scrollbar{display:none}
+.gi{
+  flex-shrink:0;scroll-snap-align:start;
+  position:relative;overflow:hidden;background:var(--dark);
+}
+.gi:nth-child(odd){width:340px;height:460px}
+.gi:nth-child(even){width:280px;height:380px;margin-top:40px}
+.gi img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.6) saturate(.75);transition:all .6s}
+.gi:hover img{filter:brightness(.9) saturate(1.1);transform:scale(1.04)}
+.gi-over{
+  position:absolute;inset:0;
+  background:linear-gradient(transparent 40%,rgba(10,10,10,.95));
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:24px 20px;
+}
+.gi-cat{font-family:'Syne Mono',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.gi-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+
+/* ═══ SERATE ═══ */
+.serate-sec{background:var(--bg);padding:100px 48px}
+.serate-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);
+  margin-top:60px;
+}
+.serata{
+  background:var(--bg);padding:48px 36px;
+  position:relative;overflow:hidden;
+  transition:background .3s;
+}
+.serata:hover{background:var(--mid)}
+.serata::before{
+  content:attr(data-n);
+  position:absolute;top:20px;right:24px;
+  font-family:'Anton',sans-serif;font-size:80px;
+  color:rgba(245,240,232,.04);line-height:1;pointer-events:none;
+}
+.serata-ico{font-size:48px;margin-bottom:20px;display:block}
+.serata-when{
+  font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--red);margin-bottom:10px;
+}
+.serata-title{
+  font-family:'Anton',sans-serif;font-size:28px;text-transform:uppercase;
+  letter-spacing:.02em;margin-bottom:14px;line-height:1.1;
+}
+.serata-desc{font-size:13px;color:var(--muted);line-height:1.75;font-weight:400}
+.serata-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:20px;font-size:10px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--gold);text-decoration:none;
+  transition:gap .2s;
+}
+.serata-cta:hover{gap:14px}
+
+/* ═══ STASERA BANNER ═══ */
+.stasera-banner{
+  background:var(--red);padding:48px;
+  display:grid;grid-template-columns:auto 1fr auto;
+  align-items:center;gap:48px;
+}
+.sb-label{
+  font-family:'Anton',sans-serif;font-size:clamp(40px,6vw,72px);
+  text-transform:uppercase;color:white;letter-spacing:-.01em;line-height:1;
+}
+.sb-content{border-left:2px solid rgba(255,255,255,.2);padding-left:32px}
+.sb-day{font-family:'Syne Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:8px}
+.sb-cuisine{font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:white;margin-bottom:4px}
+.sb-price{font-size:12px;color:rgba(255,255,255,.55);letter-spacing:.1em;text-transform:uppercase}
+.sb-btn{
+  background:white;color:var(--red);border:none;
+  padding:18px 40px;font-family:'Syne',sans-serif;font-size:11px;
+  font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block;
+  white-space:nowrap;
+}
+.sb-btn:hover{background:var(--ink);transform:translateY(-2px)}
+
+/* ═══ BOOKING ═══ */
+.book-sec{
+  background:var(--mid);
+  display:grid;grid-template-columns:1fr 1fr;
+}
+.book-l{
+  padding:100px 48px;
+  background:var(--dark);
+  display:flex;flex-direction:column;justify-content:center;
+}
+.book-l h2{
+  font-family:'Anton',sans-serif;
+  font-size:clamp(48px,6vw,80px);
+  text-transform:uppercase;line-height:.9;
+  margin-bottom:24px;letter-spacing:-.01em;
+}
+.book-l h2 .red{color:var(--red)}
+.book-l p{font-size:14px;color:var(--muted);line-height:1.85;max-width:360px;margin-bottom:32px}
+.ci-list{display:flex;flex-direction:column;gap:20px}
+.ci{display:flex;gap:16px;align-items:flex-start}
+.ci-ico{
+  width:44px;height:44px;flex-shrink:0;
+  background:rgba(139,26,42,.12);border:1px solid rgba(139,26,42,.3);
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+}
+.ci-l{font-family:'Syne Mono',monospace;font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-bottom:4px}
+.ci-v{font-size:13px;color:var(--muted);line-height:1.6}
+
+.book-r{padding:100px 48px;background:var(--mid)}
+.book-r h3{
+  font-family:'Anton',sans-serif;font-size:36px;
+  text-transform:uppercase;letter-spacing:.02em;margin-bottom:8px;
+}
+.book-r p{font-size:12px;color:var(--muted);margin-bottom:32px;font-family:'Syne Mono',monospace;letter-spacing:.06em}
+.fg{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
+.fg label{
+  font-family:'Syne Mono',monospace;font-size:8px;
+  letter-spacing:.2em;text-transform:uppercase;color:rgba(245,240,232,.3);
+}
+.fg input,.fg select{
+  background:transparent;border:none;border-bottom:2px solid rgba(245,240,232,.1);
+  color:var(--ink);padding:11px 0;
+  font-family:'Syne',sans-serif;font-size:13px;font-weight:500;
+  outline:none;transition:border-color .2s;width:100%;
+}
+.fg input:focus,.fg select:focus{border-bottom-color:var(--red)}
+.fg input::placeholder{color:rgba(245,240,232,.15)}
+.fg select option{background:#141414}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.sbtn{
+  width:100%;background:var(--red);color:white;border:none;
+  padding:18px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;cursor:pointer;
+  transition:all .3s;margin-top:8px;position:relative;overflow:hidden;
+}
+.sbtn::before{
+  content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);
+  transition:left .5s;
+}
+.sbtn:hover::before{left:100%}
+.sbtn:hover{background:var(--red2);box-shadow:0 8px 28px rgba(139,26,42,.5)}
+
+/* ═══ REVIEWS ═══ */
+.rev-sec{background:var(--bg);padding:100px 48px}
+.rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:60px}
+.rev-item{
+  background:var(--bg);padding:36px 28px;
+  transition:background .3s;
+}
+.rev-item:hover{background:var(--mid)}
+.rev-stars{color:var(--gold);font-size:14px;letter-spacing:3px;margin-bottom:16px}
+.rev-text{
+  font-size:14px;line-height:1.8;color:rgba(245,240,232,.65);
+  margin-bottom:20px;font-style:italic;font-weight:400;
+}
+.rev-author{display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid var(--border)}
+.rev-name{font-size:12px;font-weight:700;color:var(--ink)}
+.rev-date{font-family:'Syne Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.08em}
+
+/* ═══ MAP ═══ */
+.map-sec{display:grid;grid-template-columns:1fr 1fr;background:var(--mid)}
+.map-l{padding:80px 48px;display:flex;flex-direction:column;justify-content:center}
+.map-l h2{font-family:'Anton',sans-serif;font-size:clamp(36px,4vw,56px);text-transform:uppercase;letter-spacing:-.01em;line-height:.92;margin-bottom:20px}
+.map-l h2 .red{color:var(--red)}
+.map-l p{font-size:14px;color:var(--muted);line-height:1.85;margin-bottom:28px}
+.map-info{display:flex;flex-direction:column;gap:14px;margin-bottom:28px}
+.map-row{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted)}
+.map-row span:first-child{color:var(--red);font-size:16px;width:24px}
+.map-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--red);color:white;padding:14px 32px;
+  text-decoration:none;font-family:'Syne',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  transition:all .2s;width:fit-content;
+}
+.map-btn:hover{background:var(--red2)}
+.map-r{position:relative;min-height:480px;overflow:hidden}
+.map-r iframe{width:100%;height:100%;border:0;filter:invert(.9) hue-rotate(180deg) saturate(.5) brightness(.75);position:absolute;inset:0}
+.map-r::before{content:'';position:absolute;left:0;top:0;bottom:0;width:60px;background:linear-gradient(to right,var(--mid),transparent);z-index:1}
+
+/* ═══ WA SUBSCRIBE ═══ */
+.wa-sec{
+  background:var(--dark);padding:72px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:40px;flex-wrap:wrap;border-top:1px solid var(--border);
+}
+.wa-left h3{font-family:'Anton',sans-serif;font-size:clamp(28px,4vw,48px);text-transform:uppercase;letter-spacing:-.01em;line-height:1;margin-bottom:8px}
+.wa-left h3 .red{color:var(--red)}
+.wa-left p{font-size:13px;color:var(--muted);max-width:440px;line-height:1.7}
+.wa-btn{
+  display:inline-flex;align-items:center;gap:14px;
+  background:#25D366;color:white;padding:18px 40px;
+  text-decoration:none;font-family:'Syne',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  transition:all .3s;white-space:nowrap;flex-shrink:0;
+}
+.wa-btn:hover{background:#128C7E;transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,211,102,.4)}
+.wa-btn-ico{font-size:22px}
+
+/* ═══ FOOTER ═══ */
+footer{background:var(--dark);border-top:3px solid var(--red);padding:64px 48px 28px}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;margin-bottom:40px}
+.foot-brand{display:flex;flex-direction:column;gap:14px}
+.foot-logo-txt{font-family:'Anton',sans-serif;font-size:28px;text-transform:uppercase;letter-spacing:.04em}
+.foot-logo-txt span{color:var(--red)}
+.foot-brand p{font-size:12px;color:var(--muted);line-height:1.8;max-width:240px}
+.foot-col h4{
+  font-family:'Syne Mono',monospace;font-size:8px;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--red);
+  margin-bottom:18px;
+}
+.foot-col a{display:block;color:var(--muted);text-decoration:none;font-size:12px;margin-bottom:10px;transition:color .2s;font-weight:400}
+.foot-col a:hover{color:var(--ink)}
+.foot-bottom{
+  border-top:1px solid var(--border);padding-top:20px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:10px;color:var(--muted);flex-wrap:wrap;gap:8px;
+  font-family:'Syne Mono',monospace;letter-spacing:.06em;
+}
+
+/* WA FLOAT */
+.wa-float{
+  position:fixed;bottom:80px;right:28px;z-index:199;
+  width:56px;height:56px;border-radius:50%;
+  background:#25D366;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;text-decoration:none;
+  box-shadow:0 4px 20px rgba(37,211,102,.4);
+  animation:wap 3s ease infinite;transition:transform .3s;
+}
+.wa-float:hover{transform:scale(1.1)}
+@keyframes wap{0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.4)}50%{box-shadow:0 4px 36px rgba(37,211,102,.65)}}
+
+/* DEMO BANNER */
+.dbanner{
+  position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:rgba(10,10,10,.97);border-top:1px solid var(--border);
+  padding:12px 48px;display:flex;align-items:center;justify-content:space-between;
+  gap:16px;backdrop-filter:blur(16px);
+}
+.db-badge{font-size:8px;letter-spacing:.14em;text-transform:uppercase;background:var(--red);color:white;padding:3px 10px;font-weight:700;font-family:'Syne',sans-serif}
+.db-t{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:10px;font-family:'Syne',sans-serif}
+.db-btns{display:flex;gap:8px}
+.dbbtn{padding:8px 20px;font-size:9px;cursor:pointer;border:none;font-family:'Syne',sans-serif;letter-spacing:.12em;text-transform:uppercase;transition:all .2s;font-weight:700}
+.dbbtn-p{background:var(--red);color:white}.dbbtn-p:hover{background:var(--red2)}
+.dbbtn-s{background:transparent;color:var(--muted);border:1px solid var(--border)}.dbbtn-s:hover{color:var(--ink)}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.vis{opacity:1;transform:translateY(0)}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  nav{padding:16px 20px}
+  nav.solid{padding:12px 20px}
+  .nav-links{display:none}
+  .hero{grid-template-columns:1fr;min-height:auto}
+  .hero-l{padding:100px 20px 48px}
+  .hero-r{height:300px;grid-template-rows:1fr}
+  .hero-r-bot{display:none}
+  .hero-number{font-size:120px;top:20px;left:-10px}
+  .strip-inner .si{padding:0 20px;font-size:11px}
+  .about{grid-template-columns:1fr}
+  .about-r{height:300px;grid-template-columns:1fr 1fr;grid-template-rows:1fr}
+  .agrid-item:first-child{grid-row:1}
+  .about-l{padding:60px 20px}
+  .about-number{font-size:120px}
+  .menu-sec{padding:60px 20px}
+  .menu-grid{grid-template-columns:1fr}
+  .menu-header{flex-direction:column;align-items:flex-start}
+  .menu-price{font-size:56px}
+  .gal-sec{padding:60px 0}
+  .gal-header{padding:0 20px 32px}
+  .gal-track{padding:0 20px}
+  .gi:nth-child(odd){width:260px;height:360px}
+  .gi:nth-child(even){width:220px;height:300px;margin-top:30px}
+  .serate-sec{padding:60px 20px}
+  .serate-grid{grid-template-columns:1fr}
+  .stasera-banner{grid-template-columns:1fr;gap:24px;padding:32px 20px}
+  .book-sec{grid-template-columns:1fr}
+  .book-l,.book-r{padding:60px 20px}
+  .frow{grid-template-columns:1fr}
+  .rev-sec{padding:60px 20px}
+  .rev-grid{grid-template-columns:1fr}
+  .map-sec{grid-template-columns:1fr}
+  .map-l{padding:60px 20px}
+  .map-r{min-height:300px}
+  .wa-sec{padding:48px 20px;flex-direction:column;text-align:center}
+  .wa-left p{max-width:100%}
+  footer{padding:48px 20px 24px}
+  .foot-grid{grid-template-columns:1fr;gap:32px}
+  .foot-bottom{flex-direction:column;text-align:center}
+  .dbanner{padding:10px 16px;flex-direction:column;align-items:flex-start;gap:8px}
+}
+</style>
+</head>
+<body>
+
+<div class="sp" id="sp"></div>
+
+<nav id="nav">
+  <div class="nav-logo">BISTROT<span>.</span>ENOTECA</div>
+  <div class="nav-links">
+    <a href="#about" class="t" data-key="n1">Il locale</a>
+    <a href="#menu" class="t" data-key="n2">Menu</a>
+    <a href="#galleria" class="t" data-key="n3">Galleria</a>
+    <a href="#serate" class="t" data-key="n4">Serate</a>
+    <a href="#prenota" class="t" data-key="n5">Prenota</a>
+  </div>
+  <div class="nav-r">
+    <button class="lb on" onclick="setLang('it',this)">IT</button>
+    <button class="lb" onclick="setLang('en',this)">EN</button>
+    <a href="#prenota" class="nav-cta t" data-key="ncta">Prenota</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-l">
+    <div class="hero-number">01</div>
+    <div class="hero-tag t" data-key="htag">Santa Domenica Talao · Calabria</div>
+    <h1 class="hero-title">
+      <span class="solid t" data-key="h1">Ogni sera</span>
+      <span class="accent t" data-key="h2">un'altra</span>
+      <span class="solid t" data-key="h3">cucina</span>
+    </h1>
+    <p class="hero-desc t" data-key="hdesc">Libanese. Marocchina. Messicana. Brasiliana. Hugo e Wilma portano il mondo nel cuore della Calabria — con musica jazz dal vivo ogni venerdì.</p>
+    <div class="hero-btns">
+      <a href="#menu" class="btn-fill t" data-key="hb1">Scopri il menu</a>
+      <a href="#prenota" class="btn-stroke t" data-key="hb2">Prenota</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hs"><span class="hs-n">5.0</span><div class="hs-l">Google</div></div>
+      <div class="hs"><span class="hs-n">€20</span><div class="hs-l t" data-key="hs1">A persona</div></div>
+      <div class="hs"><span class="hs-n">4+</span><div class="hs-l t" data-key="hs2">Cucine</div></div>
+      <div class="hs"><span class="hs-n">♪</span><div class="hs-l t" data-key="hs3">Jazz live</div></div>
+    </div>
+  </div>
+  <div class="hero-r">
+    <div class="hero-r-top">
+      <img src="img/hero.jpg" alt="Serata jazz"/>
+      <div class="hero-r-label t" data-key="hl1">Jazz ogni venerdì</div>
+    </div>
+    <div class="hero-r-bot">
+      <img src="img/p1.jpg" alt="I piatti"/>
+      <div class="hero-r-label t" data-key="hl2">€20 a persona</div>
+    </div>
+  </div>
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-inner">
+    <div class="si"><span>✦</span><span class="t" data-key="s1">Cucine del mondo</span></div>
+    <div class="si"><span>✦</span><span class="t" data-key="s2">Jazz dal vivo</span></div>
+    <div class="si"><span>✦</span>★ 5.0 GOOGLE · 15 RECENSIONI</div>
+    <div class="si"><span>✦</span><span class="t" data-key="s3">€20 a persona</span></div>
+    <div class="si"><span>✦</span><span class="t" data-key="s4">Hugo e Wilma</span></div>
+    <div class="si"><span>✦</span>SANTA DOMENICA TALAO</div>
+    <div class="si"><span>✦</span><span class="t" data-key="s1">Cucine del mondo</span></div>
+    <div class="si"><span>✦</span><span class="t" data-key="s2">Jazz dal vivo</span></div>
+    <div class="si"><span>✦</span>★ 5.0 GOOGLE · 15 RECENSIONI</div>
+    <div class="si"><span>✦</span><span class="t" data-key="s3">€20 a persona</span></div>
+    <div class="si"><span>✦</span><span class="t" data-key="s4">Hugo e Wilma</span></div>
+    <div class="si"><span>✦</span>SANTA DOMENICA TALAO</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-l reveal">
+    <div class="about-number">02</div>
+    <div class="sec-label t" data-key="ab_tag">Il locale</div>
+    <h2 class="sec-title t" data-key="ab_title">UN VIAGGIO<br>NEL <span class="red">MONDO</span><br>OGNI SERA</h2>
+    <p class="sec-body t" data-key="ab_body">Nel borgo medievale di Santa Domenica Talao, Hugo e Wilma hanno creato qualcosa di straordinario. Ogni sera una cucina diversa — libanese, marocchina, messicana, brasiliana — preparata con ingredienti freschi e autentica passione. La musica jazz dal vivo ogni venerdì completa un'esperienza unica.</p>
+    <div class="sec-quote t" data-key="ab_quote">"A dining revelation that transforms the very notion of international cuisine."</div>
+    <div class="tags">
+      <div class="tag t" data-key="t1">Cucine del mondo</div>
+      <div class="tag t" data-key="t2">Jazz live</div>
+      <div class="tag t" data-key="t3">Enoteca</div>
+      <div class="tag">★ 5.0 Google</div>
+    </div>
+  </div>
+  <div class="about-r">
+    <div class="agrid-item"><img src="img/p3.jpg" alt=""/><div class="agrid-cap t" data-key="ag1">Le nostre serate</div></div>
+    <div class="agrid-item"><img src="img/p2.jpg" alt=""/><div class="agrid-cap t" data-key="ag2">I piatti</div></div>
+    <div class="agrid-item"><img src="img/p4.jpg" alt=""/><div class="agrid-cap t" data-key="ag3">La cucina</div></div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="menu-sec" id="menu">
+  <div class="menu-bg-text t" data-key="mbg">MENU</div>
+  <div class="menu-header reveal">
+    <div>
+      <div class="sec-label t" data-key="m_tag">Cucina di stagione</div>
+      <h2 class="sec-title t" data-key="m_title">IL <span class="red">MENU</span><br>DI STASERA</h2>
+      <p style="font-size:13px;color:var(--muted);max-width:360px;line-height:1.7;margin-top:12px" class="t" data-key="m_note">Il menu cambia ogni sera. Seguite i social per la cucina di stasera.</p>
+    </div>
+    <div style="text-align:right">
+      <div class="menu-price">€20</div>
+      <div class="menu-price-sub t" data-key="m_price_sub">A persona · tutto incluso</div>
+    </div>
+  </div>
+  <div class="menu-grid">
+    <div class="mcat reveal">
+      <div class="mcat-n">01</div>
+      <div class="mcat-title t" data-key="c1">Antipasti</div>
+      <div class="mi"><span class="mi-name t" data-key="d1">Tagliere internazionale</span><div class="mi-desc t" data-key="d1d">Formaggi, salumi, olive, pane · cambia ogni sera</div><span class="mi-tag t" data-key="d1t">della casa</span></div>
+      <div class="mi"><span class="mi-name t" data-key="d2">Zuppa del giorno</span><div class="mi-desc t" data-key="d2d">Ingredienti freschi di stagione da Wilma</div></div>
+      <div class="mi"><span class="mi-name t" data-key="d3">Tartare della casa</span><div class="mi-desc t" data-key="d3d">Carne selezionata, erba cipollina, olio EVO</div><span class="mi-tag t" data-key="d3t">speciale</span></div>
+    </div>
+    <div class="mcat reveal">
+      <div class="mcat-n">02</div>
+      <div class="mcat-title t" data-key="c2">Piatti principali</div>
+      <div class="mi"><span class="mi-name t" data-key="d4">Piatto della serata</span><div class="mi-desc t" data-key="d4d">Cambia ogni sera · libanese, marocchino, messicano, brasiliano</div><span class="mi-tag t" data-key="d4t">rotante</span></div>
+      <div class="mi"><span class="mi-name t" data-key="d5">Carne alla brace</span><div class="mi-desc t" data-key="d5d">Con verdure grigliate e salsa della casa</div></div>
+      <div class="mi"><span class="mi-name t" data-key="d6">Ricotta e verdure</span><div class="mi-desc t" data-key="d6d">Ricotta fresca, carote al miele, pane bruschettato</div></div>
+    </div>
+    <div class="mcat reveal">
+      <div class="mcat-n">03</div>
+      <div class="mcat-title t" data-key="c3">Dolci & Cantina</div>
+      <div class="mi"><span class="mi-name t" data-key="d7">Dolce del giorno</span><div class="mi-desc t" data-key="d7d">Preparato secondo ispirazione</div></div>
+      <div class="mi"><span class="mi-name t" data-key="d8">Selezione di vini</span><div class="mi-desc t" data-key="d8d">Rosso, bianco e rosato · cantina curata da Hugo</div></div>
+      <div class="mi"><span class="mi-name t" data-key="d9">Cocktail della casa</span><div class="mi-desc t" data-key="d9d">Creazioni originali · chiedi al bancone</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STASERA BANNER -->
+<div class="stasera-banner" id="stasera">
+  <div class="sb-label t" data-key="sbl">STASERA</div>
+  <div class="sb-content">
+    <div class="sb-day" id="sb-day">Martedì</div>
+    <div class="sb-cuisine" id="sb-cuisine">🇱🇧 Cucina libanese</div>
+    <div class="sb-price t" data-key="sb_price">€20 a persona · tutto incluso</div>
+  </div>
+  <a href="https://wa.me/393421843929?text=Ciao%20Hugo%20e%20Wilma!%20Vorrei%20prenotare%20per%20stasera%20%F0%9F%98%8A" target="_blank" class="sb-btn t" data-key="sb_btn">Prenota stasera →</a>
+</div>
+
+<!-- GALLERY -->
+<section class="gal-sec" id="galleria">
+  <div class="gal-header reveal">
+    <div>
+      <div class="sec-label t" data-key="g_tag">Fotografie</div>
+      <h2 class="sec-title t" data-key="g_title">I NOSTRI <span class="red">PIATTI</span></h2>
+    </div>
+    <div class="gal-hint t" data-key="g_hint">← Scorri →</div>
+  </div>
+  <div class="gal-track" id="gt">
+    <div class="gi"><img src="img/p1.jpg" alt=""/><div class="gi-over"><div class="gi-cat t" data-key="gc1">Serata speciale</div><div class="gi-name t" data-key="gn1">La tavola</div></div></div>
+    <div class="gi"><img src="img/p5.jpg" alt=""/><div class="gi-over"><div class="gi-cat t" data-key="gc2">Antipasto</div><div class="gi-name t" data-key="gn2">Carne alla brace</div></div></div>
+    <div class="gi"><img src="img/p3.jpg" alt=""/><div class="gi-over"><div class="gi-cat t" data-key="gc3">Cucina messicana</div><div class="gi-name t" data-key="gn3">Tacos della serata</div></div></div>
+    <div class="gi"><img src="img/p4.jpg" alt=""/><div class="gi-over"><div class="gi-cat t" data-key="gc4">Antipasto</div><div class="gi-name t" data-key="gn4">Ricotta e caviale</div></div></div>
+    <div class="gi"><img src="img/p6.jpg" alt=""/><div class="gi-over"><div class="gi-cat t" data-key="gc5">Piatto principale</div><div class="gi-name t" data-key="gn5">Carne con salsa</div></div></div>
+    <div class="gi"><img src="img/p7.jpg" alt=""/><div class="gi-over"><div class="gi-cat t" data-key="gc6">Antipasto</div><div class="gi-name t" data-key="gn6">Tartare della casa</div></div></div>
+    <div class="gi"><img src="img/p8.jpg" alt=""/><div class="gi-over"><div class="gi-cat t" data-key="gc7">Antipasto</div><div class="gi-name t" data-key="gn7">Ricotta e carote</div></div></div>
+  </div>
+</section>
+
+<!-- SERATE -->
+<section class="serate-sec" id="serate">
+  <div class="reveal">
+    <div class="sec-label t" data-key="se_tag">Ogni sera è diversa</div>
+    <h2 class="sec-title t" data-key="se_title">LE NOSTRE <span class="red">SERATE</span></h2>
+  </div>
+  <div class="serate-grid">
+    <div class="serata reveal" data-n="01">
+      <span class="serata-ico">🎸</span>
+      <div class="serata-when t" data-key="ev1w">Ogni venerdì sera</div>
+      <div class="serata-title t" data-key="ev1t">JAZZ & MUSICA DAL VIVO</div>
+      <div class="serata-desc t" data-key="ev1d">Musicisti locali si esibiscono durante la cena. Jazz, blues, bossa nova, manouche — ogni venerdì una sorpresa diversa.</div>
+      <a href="https://wa.me/393421843929?text=Ciao!%20Vorrei%20prenotare%20per%20venerd%C3%AC%20sera%20%F0%9F%8E%B8" target="_blank" class="serata-cta t" data-key="ev1cta">Prenota venerdì →</a>
+    </div>
+    <div class="serata reveal" data-n="02">
+      <span class="serata-ico">🌍</span>
+      <div class="serata-when t" data-key="ev2w">Ogni sabato sera</div>
+      <div class="serata-title t" data-key="ev2t">SERATA TEMATICA</div>
+      <div class="serata-desc t" data-key="ev2d">Libanese, marocchina, messicana, brasiliana — ogni sabato un paese diverso. Seguite i social per la prossima destinazione.</div>
+      <a href="https://wa.me/393421843929" target="_blank" class="serata-cta t" data-key="ev2cta">Scopri la prossima →</a>
+    </div>
+    <div class="serata reveal" data-n="03">
+      <span class="serata-ico">🍷</span>
+      <div class="serata-when t" data-key="ev3w">Ogni domenica</div>
+      <div class="serata-title t" data-key="ev3t">APERITIVO IN ENOTECA</div>
+      <div class="serata-desc t" data-key="ev3d">Vini calabresi e nazionali con stuzzichini della casa. Hugo vi guida nella scelta del vino perfetto.</div>
+      <a href="https://wa.me/393421843929" target="_blank" class="serata-cta t" data-key="ev3cta">Prenota aperitivo →</a>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section class="book-sec" id="prenota">
+  <div class="book-l reveal">
+    <div class="sec-label t" data-key="bk_tag">Vieni a trovarci</div>
+    <h2 class="t" data-key="bk_title">PRENOTA<br>IL TUO<br><span class="red">TAVOLO</span></h2>
+    <p class="t" data-key="bk_sub">I posti sono limitati e le serate si riempiono in fretta. Hugo e Wilma vi aspettano.</p>
+    <div class="ci-list">
+      <div class="ci"><div class="ci-ico">📞</div><div><div class="ci-l">WhatsApp</div><div class="ci-v"><a href="tel:+393421843929" style="color:var(--gold);text-decoration:none">+39 342 184 3929</a></div></div></div>
+      <div class="ci"><div class="ci-ico">📍</div><div><div class="ci-l t" data-key="ci1">Indirizzo</div><div class="ci-v">Via del Corso · Santa Domenica Talao (CS)</div></div></div>
+      <div class="ci"><div class="ci-ico">🕐</div><div><div class="ci-l t" data-key="ci2">Orari</div><div class="ci-v t" data-key="ci2v">18:00–00:00 · Bassa stagione: chiuso mer e gio<br>Dal 15 aprile: chiuso solo mer<br>Da giugno: aperto tutti i giorni</div></div></div>
+    </div>
+  </div>
+  <div class="book-r reveal">
+    <h3 class="t" data-key="f_title">PRENOTA</h3>
+    <p class="t" data-key="f_sub">Vi risponderemo a breve per confermare</p>
+    <div class="frow">
+      <div class="fg"><label class="t" data-key="fn">Nome</label><input type="text" placeholder="Mario"/></div>
+      <div class="fg"><label class="t" data-key="fsr">Cognome</label><input type="text" placeholder="Rossi"/></div>
+    </div>
+    <div class="fg"><label>WhatsApp / Tel</label><input type="text" placeholder="+39 342 184 3929"/></div>
+    <div class="frow">
+      <div class="fg"><label class="t" data-key="fd">Data</label><input type="date"/></div>
+      <div class="fg"><label class="t" data-key="fg2">Persone</label><select><option>2</option><option selected>3–4</option><option>5–6</option><option>7+</option></select></div>
+    </div>
+    <div class="fg"><label class="t" data-key="fno">Note</label><input type="text" placeholder="Allergie, occasioni speciali..."/></div>
+    <button class="sbtn" onclick="alert(window._lang==='en'?'✓ Request sent! Hugo and Wilma will contact you shortly.':'✓ Richiesta inviata! Hugo e Wilma vi contatteranno a breve.')">
+      <span class="t" data-key="fbtn">Invia richiesta →</span>
+    </button>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="rev-sec">
+  <div class="reveal">
+    <div class="sec-label t" data-key="rv_tag">Cosa dicono di noi</div>
+    <h2 class="sec-title t" data-key="rv_title">★ 5.0 SU <span class="red">GOOGLE</span></h2>
+  </div>
+  <div class="rev-grid">
+    <div class="rev-item reveal"><div class="rev-stars">★★★★★</div><p class="rev-text">"Nested within the winding streets of Santa Domenica Talao lies a dining revelation that transforms the very notion of international cuisine."</p><div class="rev-author"><span class="rev-name">🇬🇧 Sarah M.</span><span class="rev-date">Marzo 2025</span></div></div>
+    <div class="rev-item reveal"><div class="rev-stars">★★★★★</div><p class="rev-text">"Abbiamo cenato durante la serata libanese — favoloso! Hugo ci ha guidati nella scelta del vino perfetto. Torneremo sicuramente."</p><div class="rev-author"><span class="rev-name">🇮🇹 Giulia R.</span><span class="rev-date">Febbraio 2025</span></div></div>
+    <div class="rev-item reveal"><div class="rev-stars">★★★★★</div><p class="rev-text">"The jazz on Friday evenings creates an atmosphere unlike anywhere else in Calabria. Food was exceptional, service warm and personal."</p><div class="rev-author"><span class="rev-name">🇦🇺 James T.</span><span class="rev-date">Gennaio 2025</span></div></div>
+    <div class="rev-item reveal"><div class="rev-stars">★★★★★</div><p class="rev-text">"Wilma e Hugo sono ospiti straordinari. La cucina marocchina del sabato è stata una sorpresa incredibile — tagine perfetto!"</p><div class="rev-author"><span class="rev-name">🇮🇹 Lorenzo B.</span><span class="rev-date">Dicembre 2024</span></div></div>
+    <div class="rev-item reveal"><div class="rev-stars">★★★★★</div><p class="rev-text">"Truly exceptional experience. The rotating international menu concept is genius, and every dish shows real craft and passion."</p><div class="rev-author"><span class="rev-name">🇩🇪 Emma K.</span><span class="rev-date">Novembre 2024</span></div></div>
+    <div class="rev-item reveal"><div class="rev-stars">★★★★★</div><p class="rev-text">"Un posto magico in un borgo magico. Il Brazilian BBQ con la musica jazz — un'esperienza che non dimenticherò mai."</p><div class="rev-author"><span class="rev-name">🇮🇹 Francesca L.</span><span class="rev-date">Ottobre 2024</span></div></div>
+  </div>
+</section>
+
+<!-- MAP -->
+<section class="map-sec" id="mappa">
+  <div class="map-l reveal">
+    <div class="sec-label t" data-key="map_tag">Come raggiungerci</div>
+    <h2 class="t" data-key="map_title">SIAMO NEL<br><span class="red">CENTRO</span><br>STORICO</h2>
+    <p class="t" data-key="map_desc">Nel cuore del borgo medievale di Santa Domenica Talao, a 15 minuti da Scalea e Praia a Mare. Facilmente raggiungibile dalla SS18.</p>
+    <div class="map-info">
+      <div class="map-row"><span>📍</span><span>Via del Corso · Santa Domenica Talao (CS)</span></div>
+      <div class="map-row"><span>🚗</span><span class="t" data-key="map_car">15 min da Scalea · 20 min da Praia a Mare</span></div>
+      <div class="map-row"><span>🅿️</span><span class="t" data-key="map_park">Parcheggio gratuito nel borgo</span></div>
+    </div>
+    <a href="https://maps.google.com/?q=Santa+Domenica+Talao+Cosenza" target="_blank" class="map-btn t" data-key="map_btn">🗺 Apri in Google Maps →</a>
+  </div>
+  <div class="map-r">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12000!2d15.79!3d39.89!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x131b7d1234567890%3A0x0!2sSanta+Domenica+Talao!5e0!3m2!1sit!2sit" allowfullscreen loading="lazy"></iframe>
+  </div>
+</section>
+
+<!-- WA SUBSCRIBE -->
+<div class="wa-sec reveal">
+  <div class="wa-left">
+    <h3 class="t" data-key="wa_title">SCOPRI LA CUCINA<br>DI <span class="red">STASERA</span></h3>
+    <p class="t" data-key="wa_desc">Ogni pomeriggio alle 16:00 ricevi su WhatsApp la cucina di stasera, il menu e come prenotare. Gratis, nessuno spam.</p>
+  </div>
+  <a href="https://wa.me/393421843929?text=Ciao!%20Vorrei%20ricevere%20gli%20aggiornamenti%20sulla%20cucina%20di%20stasera%20%F0%9F%8D%BD%EF%B8%8F" target="_blank" class="wa-btn">
+    <span class="wa-btn-ico">💬</span>
+    <span class="t" data-key="wa_btn">Iscriviti su WhatsApp →</span>
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <div class="foot-logo-txt">BISTROT<span>.</span>ENOTECA</div>
+      <p class="t" data-key="ft_desc">Cucine del mondo nel cuore di Santa Domenica Talao. Ogni sera un viaggio con Hugo e Wilma. Jazz dal vivo ogni venerdì.</p>
+    </div>
+    <div class="foot-col">
+      <h4 class="t" data-key="fth1">Il locale</h4>
+      <a href="#about" class="t" data-key="ftl1">Il nostro locale</a>
+      <a href="#menu">Menu</a>
+      <a href="#galleria" class="t" data-key="ftl2">Galleria</a>
+      <a href="#serate" class="t" data-key="ftl3">Serate</a>
+      <a href="#prenota" class="t" data-key="ftl4">Prenota</a>
+    </div>
+    <div class="foot-col">
+      <h4 class="t" data-key="fth2">Contatti</h4>
+      <a href="tel:+393421843929">+39 342 184 3929</a>
+      <a href="#">Via del Corso · Santa Domenica Talao</a>
+      <a href="#">Instagram · Facebook</a>
+      <a href="#">Privacy Policy</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2025 BISTROT.ENOTECA DEL CORSO · SANTA DOMENICA TALAO (CS)</span>
+    <span style="color:var(--red);font-family:'Anton',sans-serif;letter-spacing:.06em">★ 5.0 · CUCINE DEL MONDO</span>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/393421843929?text=Ciao%20Hugo%20e%20Wilma!%20Vorrei%20prenotare%20%F0%9F%98%8A" target="_blank">💬</a>
+
+<div class="dbanner" id="db">
+  <div class="db-t"><span class="db-badge">DEMO V4</span><span class="t" data-key="dmt">Versione <strong style="color:var(--gold)">"Manifesto"</strong> — BistrotEnoteca Del Corso</span></div>
+  <div class="db-btns">
+    <button class="dbbtn dbbtn-s" onclick="document.getElementById('db').style.display='none'">✕</button>
+    <button class="dbbtn dbbtn-p t" data-key="dmb" onclick="alert('Contattaci per attivare!')">Voglio questo sito →</button>
+  </div>
+</div>
+
+<script>
+const T = {
+  it: {
+    n1:'Il locale',n2:'Menu',n3:'Galleria',n4:'Serate',n5:'Prenota',ncta:'Prenota',
+    htag:'Santa Domenica Talao · Calabria',
+    h1:'Ogni sera',h2:"un'altra",h3:'cucina',
+    hdesc:'Libanese. Marocchina. Messicana. Brasiliana. Hugo e Wilma portano il mondo nel cuore della Calabria — con musica jazz dal vivo ogni venerdì.',
+    hb1:'Scopri il menu',hb2:'Prenota',
+    hs1:'A persona',hs2:'Cucine',hs3:'Jazz live',
+    hl1:'Jazz ogni venerdì',hl2:'€20 a persona',
+    s1:'Cucine del mondo',s2:'Jazz dal vivo',s3:'€20 a persona',s4:'Hugo e Wilma',
+    ab_tag:'Il locale',ab_title:'UN VIAGGIO<br>NEL <span class="red">MONDO</span><br>OGNI SERA',
+    ab_body:"Nel borgo medievale di Santa Domenica Talao, Hugo e Wilma hanno creato qualcosa di straordinario. Ogni sera una cucina diversa con ingredienti freschi e autentica passione. La musica jazz dal vivo ogni venerdì completa un'esperienza unica.",
+    ab_quote:'"A dining revelation that transforms the very notion of international cuisine."',
+    t1:'Cucine del mondo',t2:'Jazz live',t3:'Enoteca',
+    ag1:'Le nostre serate',ag2:'I piatti',ag3:'La cucina',
+    m_tag:'Cucina di stagione',m_title:'IL <span class="red">MENU</span><br>DI STASERA',
+    m_note:'Il menu cambia ogni sera. Seguite i social per la cucina di stasera.',
+    m_price_sub:'A persona · tutto incluso',mbg:'MENU',
+    c1:'Antipasti',c2:'Piatti principali',c3:'Dolci & Cantina',
+    d1:'Tagliere internazionale',d1d:'Formaggi, salumi, olive, pane · cambia ogni sera',d1t:'della casa',
+    d2:'Zuppa del giorno',d2d:'Ingredienti freschi di stagione da Wilma',
+    d3:'Tartare della casa',d3d:'Carne selezionata, erba cipollina, olio EVO',d3t:'speciale',
+    d4:'Piatto della serata',d4d:'Cambia ogni sera · libanese, marocchino, messicano, brasiliano',d4t:'rotante',
+    d5:'Carne alla brace',d5d:'Con verdure grigliate e salsa della casa',
+    d6:'Ricotta e verdure',d6d:'Ricotta fresca, carote al miele, pane bruschettato',
+    d7:'Dolce del giorno',d7d:'Preparato secondo ispirazione',
+    d8:'Selezione di vini',d8d:'Rosso, bianco e rosato · cantina curata da Hugo',
+    d9:'Cocktail della casa',d9d:'Creazioni originali · chiedi al bancone',
+    sbl:'STASERA',sb_price:'€20 a persona · tutto incluso',sb_btn:'Prenota stasera →',
+    g_tag:'Fotografie',g_title:'I NOSTRI <span class="red">PIATTI</span>',g_hint:'← Scorri →',
+    gc1:'Serata speciale',gn1:'La tavola',gc2:'Antipasto',gn2:'Carne alla brace',
+    gc3:'Cucina messicana',gn3:'Tacos della serata',gc4:'Antipasto',gn4:'Ricotta e caviale',
+    gc5:'Piatto principale',gn5:'Carne con salsa',gc6:'Antipasto',gn6:'Tartare della casa',gc7:'Antipasto',gn7:'Ricotta e carote',
+    se_tag:'Ogni sera è diversa',se_title:'LE NOSTRE <span class="red">SERATE</span>',
+    ev1w:'Ogni venerdì sera',ev1t:'JAZZ & MUSICA DAL VIVO',ev1d:'Musicisti locali durante la cena. Jazz, blues, bossa nova — ogni venerdì una sorpresa.',ev1cta:'Prenota venerdì →',
+    ev2w:'Ogni sabato sera',ev2t:'SERATA TEMATICA',ev2d:'Libanese, marocchina, messicana, brasiliana — ogni sabato un paese diverso.',ev2cta:'Scopri la prossima →',
+    ev3w:'Ogni domenica',ev3t:'APERITIVO IN ENOTECA',ev3d:'Vini calabresi con stuzzichini. Hugo vi guida nella scelta.',ev3cta:'Prenota aperitivo →',
+    bk_tag:'Vieni a trovarci',bk_title:'PRENOTA<br>IL TUO<br><span class="red">TAVOLO</span>',
+    bk_sub:'I posti sono limitati. Hugo e Wilma vi aspettano.',
+    ci1:'Indirizzo',ci2:'Orari',ci2v:'18:00–00:00 · Bassa stagione: chiuso mer e gio<br>Dal 15 aprile: chiuso solo mer<br>Da giugno: aperto tutti i giorni',
+    f_title:'PRENOTA',f_sub:'Vi risponderemo a breve',
+    fn:'Nome',fsr:'Cognome',fd:'Data',fg2:'Persone',fno:'Note',fbtn:'Invia richiesta →',
+    rv_tag:'Cosa dicono di noi',rv_title:'★ 5.0 SU <span class="red">GOOGLE</span>',
+    map_tag:'Come raggiungerci',map_title:'SIAMO NEL<br><span class="red">CENTRO</span><br>STORICO',
+    map_desc:'Nel cuore del borgo medievale di Santa Domenica Talao, a 15 minuti da Scalea e Praia a Mare.',
+    map_car:'15 min da Scalea · 20 min da Praia a Mare',map_park:'Parcheggio gratuito nel borgo',map_btn:'🗺 Apri in Google Maps →',
+    wa_title:'SCOPRI LA CUCINA<br>DI <span class="red">STASERA</span>',
+    wa_desc:'Ogni pomeriggio alle 16:00 ricevi su WhatsApp la cucina di stasera e come prenotare. Gratis.',
+    wa_btn:'Iscriviti su WhatsApp →',
+    ft_desc:'Cucine del mondo a Santa Domenica Talao. Ogni sera un viaggio con Hugo e Wilma.',
+    fth1:'Il locale',ftl1:'Il nostro locale',ftl2:'Galleria',ftl3:'Serate',ftl4:'Prenota',fth2:'Contatti',
+    dmt:'Versione <strong style="color:var(--gold)">"Manifesto"</strong> — BistrotEnoteca Del Corso',dmb:'Voglio questo sito →'
+  },
+  en: {
+    n1:'The place',n2:'Menu',n3:'Gallery',n4:'Events',n5:'Book',ncta:'Book',
+    htag:'Santa Domenica Talao · Calabria',
+    h1:'Every night',h2:'another',h3:'cuisine',
+    hdesc:'Lebanese. Moroccan. Mexican. Brazilian. Hugo and Wilma bring the world to the heart of Calabria — with live jazz every Friday.',
+    hb1:'Explore the menu',hb2:'Book now',
+    hs1:'Per person',hs2:'Cuisines',hs3:'Jazz live',
+    hl1:'Jazz every Friday',hl2:'€20 per person',
+    s1:'World cuisines',s2:'Live jazz',s3:'€20 per person',s4:'Hugo and Wilma',
+    ab_tag:'The place',ab_title:'A JOURNEY<br>AROUND THE <span class="red">WORLD</span><br>EVERY NIGHT',
+    ab_body:'In the medieval village of Santa Domenica Talao, Hugo and Wilma have created something extraordinary. Every evening a different world cuisine, prepared with fresh ingredients and genuine passion. Live jazz every Friday.',
+    ab_quote:'"A dining revelation that transforms the very notion of international cuisine."',
+    t1:'World cuisines',t2:'Live jazz',t3:'Wine cellar',
+    ag1:'Our evenings',ag2:'The dishes',ag3:'The kitchen',
+    m_tag:'Seasonal cuisine',m_title:'TONIGHT\'S <span class="red">MENU</span>',
+    m_note:'The menu changes every evening. Follow our social media for tonight.',
+    m_price_sub:'Per person · all included',mbg:'MENU',
+    c1:'Starters',c2:'Main courses',c3:'Desserts & Wine',
+    d1:'International board',d1d:'Cheeses, meats, olives, bread · changes nightly',d1t:'house special',
+    d2:'Soup of the day',d2d:'Fresh seasonal ingredients by Wilma',
+    d3:'House tartare',d3d:'Selected meat, chives, Calabrian olive oil',d3t:'special',
+    d4:'Evening dish',d4d:'Changes every night · Lebanese, Moroccan, Mexican, Brazilian',d4t:'rotating',
+    d5:'Grilled meat',d5d:'With seasonal grilled vegetables and house sauce',
+    d6:'Ricotta & vegetables',d6d:'Fresh ricotta, honey carrots, bruschetta',
+    d7:'Dessert of the day',d7d:'Prepared according to inspiration',
+    d8:'Selected wines',d8d:'Red, white and rosé · curated by Hugo',
+    d9:'House cocktail',d9d:'Original creations · ask at the bar',
+    sbl:'TONIGHT',sb_price:'€20 per person · all included',sb_btn:'Book tonight →',
+    g_tag:'Photography',g_title:'OUR <span class="red">DISHES</span>',g_hint:'← Scroll →',
+    gc1:'Special evening',gn1:'The table',gc2:'Starter',gn2:'Grilled meat',
+    gc3:'Mexican cuisine',gn3:'Tacos of the evening',gc4:'Starter',gn4:'Ricotta and caviar',
+    gc5:'Main course',gn5:'Meat with sauce',gc6:'Starter',gn6:'House tartare',gc7:'Starter',gn7:'Ricotta and carrots',
+    se_tag:'Every evening is different',se_title:'OUR SPECIAL <span class="red">EVENINGS</span>',
+    ev1w:'Every Friday evening',ev1t:'JAZZ & LIVE MUSIC',ev1d:'Local musicians during dinner. Jazz, blues, bossa nova — a surprise every Friday.',ev1cta:'Book Friday →',
+    ev2w:'Every Saturday evening',ev2t:'THEMED EVENING',ev2d:'Lebanese, Moroccan, Mexican, Brazilian — a different country every Saturday.',ev2cta:'Discover next →',
+    ev3w:'Every Sunday',ev3t:'WINE BAR APERITIVO',ev3d:'Calabrian wines with appetizers. Hugo guides your wine choice.',ev3cta:'Book aperitivo →',
+    bk_tag:'Find us',bk_title:'BOOK<br>YOUR<br><span class="red">TABLE</span>',
+    bk_sub:'Seats are limited. Hugo and Wilma are waiting.',
+    ci1:'Address',ci2:'Hours',ci2v:'18:00–00:00 · Low season: closed Wed & Thu<br>From 15 April: closed Wed only<br>From June: open every day',
+    f_title:'BOOK',f_sub:'We will reply shortly',
+    fn:'First name',fsr:'Last name',fd:'Date',fg2:'Guests',fno:'Notes',fbtn:'Send request →',
+    rv_tag:'What people say',rv_title:'★ 5.0 ON <span class="red">GOOGLE</span>',
+    map_tag:'How to find us',map_title:'WE ARE IN THE<br><span class="red">HISTORIC</span><br>CENTRE',
+    map_desc:'In the heart of the medieval village of Santa Domenica Talao, 15 minutes from Scalea and Praia a Mare.',
+    map_car:'15 min from Scalea · 20 min from Praia a Mare',map_park:'Free parking in the village',map_btn:'🗺 Open in Google Maps →',
+    wa_title:'DISCOVER TONIGHT\'S<br><span class="red">CUISINE</span>',
+    wa_desc:'Every afternoon at 16:00 receive tonight\'s cuisine and how to book on WhatsApp. Free.',
+    wa_btn:'Subscribe on WhatsApp →',
+    ft_desc:'World cuisines in Santa Domenica Talao. Every evening with Hugo and Wilma.',
+    fth1:'The restaurant',ftl1:'Our place',ftl2:'Gallery',ftl3:'Events',ftl4:'Book',fth2:'Contact',
+    dmt:'Version <strong style="color:var(--gold)">"Manifesto"</strong> — BistrotEnoteca Del Corso',dmb:'I want this website →'
+  }
+};
+
+window._lang = 'it';
+function setLang(lang, btn) {
+  window._lang = lang;
+  document.querySelectorAll('.lb').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.t[data-key]').forEach(el => {
+    const v = T[lang][el.dataset.key];
+    if (v !== undefined) el.innerHTML = v;
+  });
+}
+
+// Nav + scroll progress
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('solid', window.scrollY > 60);
+  const p = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+  document.getElementById('sp').style.width = p + '%';
+});
+
+// Gallery drag
+const gt = document.getElementById('gt');
+let down = false, sx, sl;
+gt.addEventListener('mousedown', e => { down=true; sx=e.pageX-gt.offsetLeft; sl=gt.scrollLeft; });
+gt.addEventListener('mouseleave', () => down=false);
+gt.addEventListener('mouseup', () => down=false);
+gt.addEventListener('mousemove', e => { if(!down) return; e.preventDefault(); gt.scrollLeft = sl-(e.pageX-gt.offsetLeft-sx)*1.5; });
+
+// Stasera panel
+const days_it = ['Domenica','Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato'];
+const days_en = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const cuisines = ['🌍 Serata speciale','🔒 Chiuso','🇱🇧 Cucina libanese','🇲🇦 Cucina marocchina','🇲🇽 Cucina messicana','🇧🇷 Brazilian BBQ','🌍 Serata tematica'];
+const d = new Date().getDay();
+const dayEl = document.getElementById('sb-day');
+const cuiEl = document.getElementById('sb-cuisine');
+if (dayEl) dayEl.textContent = days_it[d];
+if (cuiEl) cuiEl.textContent = cuisines[d];
+
+// Reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => { if(e.isIntersecting) setTimeout(() => e.target.classList.add('vis'), i*80); });
+}, {threshold:.07});
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
